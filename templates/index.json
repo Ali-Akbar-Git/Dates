@@ -1,0 +1,319 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "product_grid_RtaYWH": {
+      "type": "product-grid",
+      "name": "Product Grid",
+      "settings": {
+        "heading": "MADINA DATES",
+        "collection": "col1"
+      }
+    },
+    "product_grid_YaTrJU": {
+      "type": "product-grid",
+      "disabled": true,
+      "name": "Product Grid",
+      "settings": {
+        "heading": "ABE ZAM ZAM",
+        "collection": "col2"
+      }
+    },
+    "testimonial_bar_VidKEk": {
+      "type": "testimonial-bar",
+      "blocks": {
+        "client_logo_JgAqie": {
+          "type": "client-logo",
+          "name": "Client Logo",
+          "settings": {
+            "logo": "shopify://shop_images/logo16.avif"
+          },
+          "blocks": {}
+        },
+        "client_logo_7dV7XF": {
+          "type": "client-logo",
+          "name": "Client Logo",
+          "settings": {
+            "logo": "shopify://shop_images/logo14.webp"
+          },
+          "blocks": {}
+        },
+        "client_logo_UzeNbx": {
+          "type": "client-logo",
+          "name": "Client Logo",
+          "settings": {
+            "logo": "shopify://shop_images/logo5.webp"
+          },
+          "blocks": {}
+        },
+        "client_logo_PEXmzX": {
+          "type": "client-logo",
+          "name": "Client Logo",
+          "settings": {
+            "logo": "shopify://shop_images/logo4.webp"
+          },
+          "blocks": {}
+        },
+        "client_logo_CC3CUB": {
+          "type": "client-logo",
+          "name": "Client Logo",
+          "settings": {
+            "logo": "shopify://shop_images/logo11.webp"
+          },
+          "blocks": {}
+        },
+        "client_logo_xBjiWn": {
+          "type": "client-logo",
+          "name": "Client Logo",
+          "settings": {
+            "logo": "shopify://shop_images/logo9.webp"
+          },
+          "blocks": {}
+        },
+        "client_logo_m6A9eE": {
+          "type": "client-logo",
+          "name": "Client Logo",
+          "settings": {
+            "logo": "shopify://shop_images/logo2.webp"
+          },
+          "blocks": {}
+        },
+        "client_logo_DW47Eh": {
+          "type": "client-logo",
+          "name": "Client Logo",
+          "settings": {
+            "logo": "shopify://shop_images/logo3.webp"
+          },
+          "blocks": {}
+        },
+        "client_logo_CrMT97": {
+          "type": "client-logo",
+          "name": "Client Logo",
+          "settings": {
+            "logo": "shopify://shop_images/logo6.webp"
+          },
+          "blocks": {}
+        },
+        "client_logo_6mt9Qi": {
+          "type": "client-logo",
+          "name": "Client Logo",
+          "settings": {
+            "logo": "shopify://shop_images/logo12.webp"
+          },
+          "blocks": {}
+        },
+        "client_logo_E6npfQ": {
+          "type": "client-logo",
+          "name": "Client Logo",
+          "settings": {
+            "logo": "shopify://shop_images/logo13.webp"
+          },
+          "blocks": {}
+        },
+        "client_logo_wFrdHP": {
+          "type": "client-logo",
+          "name": "Client Logo",
+          "settings": {
+            "logo": "shopify://shop_images/logo10.webp"
+          },
+          "blocks": {}
+        },
+        "client_logo_MTPgRf": {
+          "type": "client-logo",
+          "name": "Client Logo",
+          "settings": {
+            "logo": "shopify://shop_images/logo8.webp"
+          },
+          "blocks": {}
+        },
+        "client_logo_eLP86M": {
+          "type": "client-logo",
+          "name": "Client Logo",
+          "settings": {
+            "logo": "shopify://shop_images/logo7.webp"
+          },
+          "blocks": {}
+        },
+        "client_logo_aqptHQ": {
+          "type": "client-logo",
+          "name": "Client Logo",
+          "settings": {
+            "logo": "shopify://shop_images/logo1.webp"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "client_logo_JgAqie",
+        "client_logo_7dV7XF",
+        "client_logo_UzeNbx",
+        "client_logo_PEXmzX",
+        "client_logo_CC3CUB",
+        "client_logo_xBjiWn",
+        "client_logo_m6A9eE",
+        "client_logo_DW47Eh",
+        "client_logo_CrMT97",
+        "client_logo_6mt9Qi",
+        "client_logo_E6npfQ",
+        "client_logo_wFrdHP",
+        "client_logo_MTPgRf",
+        "client_logo_eLP86M",
+        "client_logo_aqptHQ"
+      ],
+      "name": "Testimonials Bar",
+      "settings": {
+        "direction": "left",
+        "spacing": 150,
+        "speed": 3
+      }
+    },
+    "features_aTGP3n": {
+      "type": "features",
+      "blocks": {
+        "feature_dXqKHh": {
+          "type": "feature",
+          "name": "Feature",
+          "settings": {
+            "image": "shopify://shop_images/Handpicked.webp",
+            "title": "Handpicked<br>Quality"
+          },
+          "blocks": {}
+        },
+        "feature_NFPx3T": {
+          "type": "feature",
+          "name": "Feature",
+          "settings": {
+            "image": "shopify://shop_images/Handpicked.webp",
+            "title": "Grown in<br>Arabian Farms"
+          },
+          "blocks": {}
+        },
+        "feature_9k7EUz": {
+          "type": "feature",
+          "name": "Feature",
+          "settings": {
+            "image": "shopify://shop_images/Luxurious.webp",
+            "title": "Luxurious<br>Packaging"
+          },
+          "blocks": {}
+        },
+        "feature_aPFEhV": {
+          "type": "feature",
+          "name": "Feature",
+          "settings": {
+            "image": "shopify://shop_images/Gift-Worthy.webp",
+            "title": "Gift-Worthy<br>Quality"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "feature_dXqKHh",
+        "feature_NFPx3T",
+        "feature_9k7EUz",
+        "feature_aPFEhV"
+      ],
+      "name": "Features",
+      "settings": {}
+    },
+    "review_bar_QcK6k9": {
+      "type": "testimonial-bar",
+      "blocks": {
+        "custom_review_qUT4Qz": {
+          "type": "custom-review",
+          "name": "Custom Review",
+          "settings": {
+            "image": "shopify://shop_images/Untitled_design_1.png",
+            "name": "Sarah Khan",
+            "review_text": "Great quality and quick delivery. My family loved every bite!",
+            "rating": 5
+          },
+          "blocks": {}
+        },
+        "custom_review_x3XDnL": {
+          "type": "custom-review",
+          "name": "Custom Review",
+          "settings": {
+            "image": "shopify://shop_images/rev5.avif",
+            "name": "Abdul Rehman",
+            "review_text": "Excellent service and fast delivery.",
+            "rating": 5
+          },
+          "blocks": {}
+        },
+        "custom_review_BNeXBb": {
+          "type": "custom-review",
+          "name": "Custom Review",
+          "settings": {
+            "image": "shopify://shop_images/rev2.avif",
+            "name": "Hamza Farooq",
+            "review_text": "Beautiful packaging and premium taste.",
+            "rating": 5
+          },
+          "blocks": {}
+        },
+        "custom_review_WqRJW8": {
+          "type": "custom-review",
+          "name": "Custom Review",
+          "settings": {
+            "image": "shopify://shop_images/pexels-ehsanahmadnejad-4669605.jpg",
+            "name": "Fatima Noor",
+            "review_text": "Soft, fresh dates with elegant presentation.",
+            "rating": 5
+          },
+          "blocks": {}
+        },
+        "custom_review_mUaGGf": {
+          "type": "custom-review",
+          "name": "Custom Review",
+          "settings": {
+            "image": "shopify://shop_images/pexels-raza-rasheed-889852887-19945176.jpg",
+            "name": "Muhammad Saleem",
+            "review_text": "Authentic Madina dates, highly recommended.",
+            "rating": 5
+          },
+          "blocks": {}
+        },
+        "custom_review_YEPrwX": {
+          "type": "custom-review",
+          "name": "Custom Review",
+          "settings": {
+            "image": "shopify://shop_images/rev1.avif",
+            "name": "Muhammad Ahmed",
+            "review_text": "Dates quality was exceptional, very fresh and delicious.",
+            "rating": 5
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "custom_review_qUT4Qz",
+        "custom_review_x3XDnL",
+        "custom_review_BNeXBb",
+        "custom_review_WqRJW8",
+        "custom_review_mUaGGf",
+        "custom_review_YEPrwX"
+      ],
+      "name": "Review Bar",
+      "settings": {
+        "direction": "right",
+        "spacing": 60,
+        "speed": 1
+      }
+    }
+  },
+  "order": [
+    "product_grid_RtaYWH",
+    "product_grid_YaTrJU",
+    "testimonial_bar_VidKEk",
+    "features_aTGP3n",
+    "review_bar_QcK6k9"
+  ]
+}

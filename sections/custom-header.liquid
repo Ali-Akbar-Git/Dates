@@ -1,0 +1,210 @@
+{{ 'custom-header.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-header.js' | asset_url }}" defer></script>
+<div class="custom-header">
+  <div class="header">
+    <button
+      class="menu-open-button"
+      type="button"
+      aria-label="Open menu"
+      aria-expanded="false">
+      {% render 'icon-menu' %}
+    </button>
+    <button class="search-button" aria-label="Search">
+      {% render 'icon-search' %}
+    </button>
+    <a href="{{shop.url}}" class="logo-link">
+      {% if settings.logo != blank %}
+        <img
+          src="{{settings.logo|  image_url: width: 500 }}"
+          alt="Logo"
+          class="logo-image"
+          width="{{ settings.logo.width }}"
+          height="{{ settings.logo.height }}">
+      {% else %}
+        <span class="logo-text">{{ shop.name }}</span>
+      {% endif %}
+    </a>
+    <button class="cart-button" aria-label="Cart">
+      {% render 'icon-cart' %}
+    </button>
+    <div class="cart-counter"></div>
+  </div>
+  <div class="menu-box">
+    <button
+      class="menu-close-button"
+      type="button"
+      aria-label="Close menu">
+      {% render 'icon-close' %}
+    </button>
+    {% assign menu = linklists[section.settings.menu] %}
+    {% if menu %}
+  {% for link in menu.links %}
+    <div class="menu-item">
+      <div class="menu-item-header">
+        <a href="{{ link.url }}">{{ link.title }}</a>
+
+        {% if link.links != blank %}
+          <button
+            class="submenu-toggle"
+            type="button"
+            aria-label="Open {{ link.title }} submenu"
+            aria-expanded="false"
+          >
+            {%  render 'icon-dropdown' %}
+          </button>
+        {% endif %}
+      </div>
+
+      {% if link.links != blank %}
+        <div class="sub-menu">
+          {% for child_link in link.links %}
+            <div class="sub-menu-item">
+              <a href="{{ child_link.url }}">
+                {{ child_link.title }}
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  {% endfor %}
+{% endif %}
+  </div>
+</div>
+<div class="drawer search-drawer">
+  <div class="search-container">
+    <div class="search-1">
+      <div class="search-2">
+        <a href="{{shop.url}}" class="logo-link">
+          {% if settings.logo != blank %}
+            <img
+              src="{{settings.logo|  image_url: width: 500 }}"
+              alt="Logo"
+              class="logo-image"
+              width="{{ settings.logo.width }}"
+              height="{{ settings.logo.height }}">
+          {% else %}
+            <span class="logo-text">{{ section.settings.header_text }}</span>
+          {% endif %}
+        </a>
+        <form
+          action="{{ routes.search_url }}"
+          method="get"
+          role="search"
+          class="search-box">
+          <input
+            type="search"
+            name="q"
+            placeholder="Search products"
+            class="input-search"
+            aria-label="Search products"
+            autocomplete="off">
+
+          <input
+            type="hidden"
+            name="type"
+            value="product">
+
+          <button
+            type="submit"
+            class="submit_button"
+            aria-label="Search">
+            {% render 'icon-search' %}
+          </button>
+        </form>
+        <button class="cart-button" aria-label="Cart">
+          {% render 'icon-cart' %}
+        </button>
+        <div class="cart-counter-inner"></div>
+      </div>
+      <div class="popular-search">
+        <span class="popular-title">
+          Popular Searches:
+        </span>
+        {% assign collection = section.settings.collection %}
+        {% if collection %}
+          {% for product in collection.products limit: 6 %}
+            <a href="{{ product.url }}" class="popular-link">
+              {{ product.title }}
+            </a>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="drawer cart-drawer">
+  <div class="cart-container">
+    <h3 class="cart-title">Shopping Cart</h3>
+    <button class="close-button">
+      {% render 'icon-close' %}
+    </button>
+    <div class="cart-wrapper loading"></div>
+  </div>
+</div>
+<template class="icon-plus">
+  {% render 'icon-plus' %}
+</template>
+<template class="icon-minus">
+  {% render 'icon-minus' %}
+</template>
+<template class="icon-shipping">
+  {% render 'icon-shipping' %}
+</template>
+<template class="icon-discount">
+  {% render 'icon-discount' %}
+</template>
+<template class="icon-complete">
+  {% render 'icon-complete' %}
+</template>
+<template
+  class="variables"
+  data-free-shipping="{{ section.settings.free-shipping | json }}"
+  data-discount-threshold="{{ section.settings.discount-threshold  | json }}"
+  data-discount-percentage="{{ section.settings.discount-percentage }}"></template>
+{% schema %}
+  {
+    "name": "Custom Header",
+    "enabled_on": {
+      "groups": ["header"]
+    },
+    "settings": [
+      {
+        "type": "collection",
+        "id": "collection",
+        "label": "Popular Search Collection"
+      },
+      {
+        "type": "number",
+        "id": "free-shipping",
+        "label": "Free shipping threshold",
+        "default": 5000
+      },
+      {
+        "type": "number",
+        "id": "discount-threshold",
+        "label": "Discount threshold",
+        "default": 8000
+      },
+      {
+        "type": "range",
+        "id": "discount-percentage",
+        "label": "Discount percentage",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "unit": "%",
+        "default": 10
+      }, {
+        "type": "link_list",
+        "id": "menu",
+        "label": "Select menu"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Custom Header"
+      }
+    ]
+  }
+{% endschema %}

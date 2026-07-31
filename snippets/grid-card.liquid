@@ -1,0 +1,28 @@
+<div class="grid-card">
+  <a href="{{ product.url }}" class="product-image-link">
+    <img
+      src="{{ product.featured_image | image_url: width: 600 }}"
+      alt="{{ product.title }}"
+      loading="lazy" />
+  </a>
+  <div class="product-title">
+    {{ product.title }}
+  </div>
+  <div class="pieces">
+    {{ product.metafields.custom.pieces.value }}
+  </div>
+  <div class="arabic-title">
+    {{ product.metafields.custom.arabic.value }}
+  </div>
+  <div class="starting-price">
+    <span>Starting at
+    </span>
+    {{ product.price_min | money_without_trailing_zeros }}</div>
+  <div class="product-description">
+    {{ product.metafields.custom.availability.value }}
+  </div>
+  <a href="{{ product.url }}" class="card-button">
+    View Details
+  </a>
+
+</div>

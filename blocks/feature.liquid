@@ -1,0 +1,27 @@
+<div class="feature">
+    <img src="{{ block.settings.image  | image_url: width: 400 }}" alt="{{ block.settings.image.alt }}">
+    <h3>{{ block.settings.title }}</h3>
+</div>
+{% schema %}
+{
+  "name": "Feature",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Feature",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

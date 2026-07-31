@@ -1,0 +1,78 @@
+<div class="menu-block">
+  <button
+    type="button"
+    class="menu-toggle"
+    aria-expanded="false"
+    aria-controls="footer-menu-{{ block.id }}"
+  >
+    <span class="menu-title">{{ block.settings.heading }}</span>
+
+    <span class="menu-toggle-icon" aria-hidden="true">
+      {%  render 'icon-dropdown' %}
+    </span>
+  </button>
+
+  {% assign menu = linklists[block.settings.menu] %}
+
+  {% if menu.links.size > 0 %}
+    <div
+      id="footer-menu-{{ block.id }}"
+      class="footer-menu-links"
+    >
+      {% for link in menu.links %}
+        <div class="menu-link-box">
+          <a href="{{ link.url }}" class="menu-link">
+            {{ link.title }}
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const menuBlock = document.querySelector(
+      '#shopify-block-{{ block.id }} .menu-block'
+    );
+
+    if (!menuBlock) return;
+
+    const toggle = menuBlock.querySelector('.menu-toggle');
+    const menuLinks = menuBlock.querySelector('.footer-menu-links');
+
+    if (!toggle || !menuLinks) return;
+
+    toggle.addEventListener('click', function () {
+      if (window.innerWidth > 1023) return;
+
+      const isOpen = menuBlock.classList.toggle('is-open');
+
+      toggle.setAttribute('aria-expanded', String(isOpen));
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Menu",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Menu Title",
+      "default": "Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Select menu"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Menu"
+    }
+  ]
+}
+{% endschema %}

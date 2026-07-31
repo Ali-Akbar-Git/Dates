@@ -1,0 +1,12 @@
+.testimonial-bar {
+  overflow: hidden;
+  width: 100%;
+  padding: 20px 0;
+}
+
+.scrolling-wrapper {
+  display: flex;
+  width: max-content;
+  gap: var(--spacing);
+  will-change: transform;
+}

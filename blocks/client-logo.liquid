@@ -1,0 +1,21 @@
+{{ 'client-logo.css' | asset_url | stylesheet_tag }}
+<div class="logo-item">
+    <img src="{{ block.settings.logo |  image_url  }}" alt="{{ block.settings.company_name }}">
+</div>
+{% schema %}
+{
+  "name": "Client Logo",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Client Logo"
+    }
+  ]
+}
+{% endschema %}

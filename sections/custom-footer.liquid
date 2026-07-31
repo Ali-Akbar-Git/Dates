@@ -1,0 +1,18 @@
+{{ 'custom-footer.css' | asset_url | stylesheet_tag }}
+<div class="custom-footer">
+  <div class="footer-wrapper">
+    <div class="footer">
+      {% content_for 'blocks' %}
+    </div>
+    <div class="copyright">© {{ shop.name }} 2026</div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Footer",
+   "enabled_on": {
+    "groups": ["footer"]
+  },
+  "blocks": [{ "type": "@theme" }, { "type": "_footer-menu" }, { "type": "_footer-branding" }, { "type": "_social" },{"type": "_footer-contact"}],
+}
+{% endschema %}

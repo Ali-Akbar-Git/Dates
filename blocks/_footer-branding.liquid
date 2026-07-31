@@ -1,0 +1,35 @@
+<div class="brand-block"> 
+  {% if settings.logo != blank %}
+    <img
+      src="{{settings.logo|  image_url: width: 1920 }}"
+      alt="Logo"
+      class="footer-logo-image"
+    >
+    {% else %}
+      <span class="footer-logo-text">{{ shop.name }}</span>
+  {% endif %}
+  <div class="brand-name">
+    <h2>{{ shop.name }}</h2>
+  </div>
+  <p class="brand-info">
+    {{ block.settings.info }}
+  </p>
+</div>
+{% schema %}
+{
+  "name": "Brand Information",
+  "settings": [
+    {
+        "type": "text",
+        "id": "info",
+        "label": "Information",
+        "default": "Our Mission is to fulfill customers shopping needs with imported dates from Madina Shareef through Al-Harmain Dates online shopping in Pakistan."
+      }
+  ],
+  "presets": [
+    {
+      "name": "Brand Information"
+    }
+  ]
+}
+{% endschema %}

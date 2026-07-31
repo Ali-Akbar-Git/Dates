@@ -1,0 +1,81 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "custom-footer": {
+      "type": "custom-footer",
+      "blocks": {
+        "footer_branding_UKyGFE": {
+          "type": "_footer-branding",
+          "name": "Brand Information",
+          "settings": {
+            "info": "Our Mission is to fulfill customers shopping needs with imported dates from Madina Shareef through Al-Harmain Dates online shopping in Pakistan."
+          },
+          "blocks": {}
+        },
+        "footer_menu_rXR3ty": {
+          "type": "_footer-menu",
+          "name": "Menu",
+          "settings": {
+            "heading": "Catalog",
+            "menu": "header-menu"
+          },
+          "blocks": {}
+        },
+        "footer_menu_cqFPVe": {
+          "type": "_footer-menu",
+          "name": "Menu",
+          "settings": {
+            "heading": "Pages",
+            "menu": "footer"
+          },
+          "blocks": {}
+        },
+        "footer_contact_GfLLCx": {
+          "type": "_footer-contact",
+          "name": "Contact Us",
+          "settings": {
+            "heading": "Contact Us",
+            "contact_address": "Plot no A379 Aleemia Street, North Nazimabad Block A, near Aleemia Masjid Karachi",
+            "contact_phone": "+1 (555) 123-4567",
+            "contact_whatsapp": "+1 (555) 987-6543",
+            "contact_email": "info@arabicdates.pk"
+          },
+          "blocks": {}
+        },
+        "social_RBEpXb": {
+          "type": "_social",
+          "name": "Social Media",
+          "settings": {
+            "facebook_url": "#",
+            "instagram_url": "#",
+            "twitter_url": "#",
+            "youtube_url": "#",
+            "tiktok_url": "#"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "footer_branding_UKyGFE",
+        "footer_menu_rXR3ty",
+        "footer_menu_cqFPVe",
+        "footer_contact_GfLLCx",
+        "social_RBEpXb"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "custom-footer"
+  ]
+}

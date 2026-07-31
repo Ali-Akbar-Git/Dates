@@ -1,0 +1,52 @@
+{{ 'custom-review.css' | asset_url | stylesheet_tag }}
+<div class="review">
+    <img class="review-img" src="{{ block.settings.image | image_url: width: 300 }}" alt="{{ block.settings.name }}">
+  <div class="review-content">
+    <h3>{{ block.settings.name }}</h3>
+    <p>{{ block.settings.review_text }}</p>
+  </div>
+  <div class="star-rating">
+    {% for i in (1..5) %}
+      {% if i <= block.settings.rating %}
+        <span class="star filled">★</span>
+      {% else %}
+        <span class="star">☆</span>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Custom Review",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Reviewer Image"
+    },
+    {
+      "type": "text",
+      "id": "name",
+      "label": "Reviewer Name"
+    },
+    {
+      "type": "textarea",
+      "id": "review_text",
+      "label": "Review Text"
+    },
+    {
+      "type": "range",
+      "id": "rating",
+      "label": "Rating (1-5)",
+      "min": 1,
+      "max": 5,
+      "default": 5
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Review"
+    }
+  ]
+}
+{% endschema %}

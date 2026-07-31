@@ -1,0 +1,54 @@
+<div class="social-block">
+  <a href="{{ settings.facebook_url }}" class="social-circle" target="_blank" rel="noopener noreferrer">
+    <div class="social-logo"> {% render 'icon-facebook' %}</div>
+  </a>
+  <a href="{{ settings.instagram_url }}" class="social-circle" target="_blank" rel="noopener noreferrer">
+    <div class="social-logo">{% render 'icon-insta' %}</div>
+  </a>
+  <a href="{{ settings.twitter_url }}" class="social-circle" target="_blank" rel="noopener noreferrer">
+    <div class="social-logo">{% render 'icon-X' %}</div>
+  </a>
+  <a href="{{ settings.youtube_url }}" class="social-circle" target="_blank" rel="noopener noreferrer">
+    <div class="social-logo">{% render 'icon-youtube' %}</div>
+  </a>
+  <a href="{{ settings.tiktok_url }}" class="social-circle" target="_blank" rel="noopener noreferrer">
+    <div class="social-logo">{% render 'icon-tiktok' %}</div>
+  </a>
+</div>
+{% schema %}
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "url",
+        "id": "facebook_url",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "url",
+        "id": "instagram_url",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "url",
+        "id": "twitter_url",
+        "label": "Twitter URL"
+      },
+      {
+        "type": "url",
+        "id": "youtube_url",
+        "label": "YouTube URL"
+      },
+      {
+        "type": "url",
+        "id": "tiktok_url",
+        "label": "TikTok URL"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Social Media"
+      }
+    ]
+  }
+{% endschema %}

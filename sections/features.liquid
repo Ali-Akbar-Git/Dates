@@ -1,0 +1,23 @@
+{{ 'features.css' | asset_url | stylesheet_tag }}
+<div class="features">
+    <div class="features-wrapper">
+    {% content_for 'blocks' %}
+    </div>
+</div>
+{% schema %}
+{
+  "name": "Features",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "@theme"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Features",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

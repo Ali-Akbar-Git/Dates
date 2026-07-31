@@ -1,0 +1,217 @@
+{{ 'custom-product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-product.js' | asset_url }}" defer></script>
+<div class="product-section">
+  <div class="product-section-wrapper">
+    <div class="image-section">
+      <div id="image-list">
+        {% for image in product.images %}
+          <div class="list-image-box{% if image == product.featured_image %} active{% endif %}" data-image-url="{{ image | image_url: width: 1200 }}">
+            <img
+              src="{{ image | image_url: width: 600 }}"
+              alt="{{ image.alt }}"
+              width="{{ image.width }}"
+              height="{{ image.height }}"
+              class="list-image"
+              loading="lazy">
+          </div>
+        {% endfor %}
+      </div>
+      <div class="main-image">
+        <img
+          id="mainProductImage"
+          src="{{ product.featured_image | image_url: width: 1200 }}"
+          alt="{{ product.featured_image.alt | escape }}"
+          width="{{ product.featured_image.width }}"
+          height="{{ product.featured_image.height }}">
+      </div>
+    </div>
+    <div class="product-info-section">
+      <h1 class="product-title">{{ product.title }}</h1>
+      <div class="price-section">
+        <span class="sale-price">{{ product.selected_or_first_available_variant.price | money }}</span>
+        <span class="regular-price">{{ product.selected_or_first_available_variant.price | times: 125 | divided_by: 100 | money }}</span>
+      </div>
+      <div class="product-variant-section">
+        <span class="product-unit-span">{{ section.settings.variant_unit }}:
+        </span>
+        <span class="product-variant-title">
+          {{ product.selected_or_first_available_variant.title }}
+        </span>
+      </div>
+      <div class="variant-buttons">
+        {% for variant in product.variants %}
+          <button
+            type="button"
+            class="variant-button{% if variant.id == product.selected_or_first_available_variant.id %} active{% endif %}"
+            data-variant-id="{{ variant.id }}"
+            data-variant-title="{{ variant.title }}"
+            data-price="{{ variant.price | money }}"
+            data-regular-price="{{ variant.price | times: 125 | divided_by: 100 | money }}"
+            data-available="{{ variant.available }}"
+            {% unless variant.available %}
+            disabled
+            {% endunless %}>
+            {{ variant.title }}
+          </button>
+        {% endfor %}
+      </div>
+      <div class="product-add-button-wrapper ">
+        <div class="product-quantity-box">
+          <div class="product-button-box">
+            <button class="product-quantity-button minus">
+              {% render 'icon-minus' %}
+            </button>
+          </div>
+          <input
+            class="product-quantity-input"
+            type="text"
+            inputmode="numeric"
+            value="1">
+          <div class="product-button-box">
+            <button class="product-quantity-button plus">
+              {% render 'icon-plus' %}
+            </button>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="product-add-button"
+          data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+          {% unless product.selected_or_first_available_variant.available %}
+          disabled
+          {% endunless %}>
+          <span class="add-to-cart-button-text">
+            {% if product.selected_or_first_available_variant.available %}
+              Add to cart
+            {% else %}
+              Sold out
+            {% endif %}
+          </span>
+        </button>
+        <div class="product-add-error" role="alert"></div>
+      </div>
+      <div class="bargin-button-box">
+        {% capture message %}
+Can I get more discount on this product?
+{{ product.title }}
+{{ shop.url }}{{ product.url }}
+{% endcapture %}
+        <a
+          class="product-bargin-button-link"
+          href="https://wa.me/{{ section.settings.whatsapp_number }}?text={{ message | url_encode }}"
+          target="_blank"
+          rel="noopener noreferrer">
+          <button
+            type="button"
+            class="product-bargin-button"
+            {% unless product.selected_or_first_available_variant.available %}
+            disabled
+            {% endunless %}>
+            <span class="bargin-button-text">
+              Need More Discount? Bargin Now
+            </span>
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  id="productImageDrawer"
+  class="image-drawer"
+  aria-hidden="true"
+>
+  <div
+    class="image-drawer-overlay"
+    data-drawer-close
+  ></div>
+
+  <div
+    class="image-drawer-panel"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Product image gallery"
+  >
+    <button
+      type="button"
+      class="image-drawer-close"
+      data-drawer-close
+      aria-label="Close image gallery"
+    >
+      &times;
+    </button>
+
+    <div class="image-drawer-content">
+      <div class="image-drawer-thumbnails">
+        {% for image in product.images %}
+          <button
+            type="button"
+            class="image-drawer-thumbnail{% if image == product.featured_image %} active{% endif %}"
+            data-drawer-image="{{ image | image_url: width: 1800 }}"
+            data-drawer-alt="{{ image.alt | default: product.title | escape }}"
+            data-image-index="{{ forloop.index0 }}"
+            aria-label="View product image {{ forloop.index }}"
+          >
+            <img
+              src="{{ image | image_url: width: 180 }}"
+              alt="{{ image.alt | default: product.title | escape }}"
+              width="90"
+              height="90"
+              loading="lazy"
+            >
+          </button>
+        {% endfor %}
+      </div>
+
+      <div class="image-drawer-main">
+        <button
+          type="button"
+          class="image-drawer-navigation image-drawer-previous"
+          aria-label="Previous image"
+        >
+          &#10094;
+        </button>
+
+        <div class="image-drawer-image-wrapper">
+          <img
+            id="drawerMainImage"
+            src="{{ product.featured_image | image_url: width: 1800 }}"
+            alt="{{ product.featured_image.alt | default: product.title | escape }}"
+          >
+        </div>
+
+        <button
+          type="button"
+          class="image-drawer-navigation image-drawer-next"
+          aria-label="Next image"
+        >
+          &#10095;
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Product",
+    "settings": [
+      {
+        "type": "text",
+        "id": "variant_unit",
+        "label": "Variant unit",
+        "default": "Weight"
+      }, {
+        "type": "text",
+        "id": "whatsapp_number",
+        "label": "WhatsApp number",
+        "info": "Enter the number in international format without + or spaces. Example: 922137170069",
+        "default": "923420696209"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Product"
+      }
+    ]
+  }
+{% endschema %}

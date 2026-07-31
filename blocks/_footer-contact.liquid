@@ -1,0 +1,56 @@
+<div class="footer-contact">
+  <h3 class="contact-heading">{{ block.settings.heading }}</h3>
+  <div class="contact-info">
+    <p class="contact-address">Address: {{ block.settings.contact_address }}</p>
+    <p class="contact-phone">Phone:
+      <a href="tel:{{ block.settings.contact_phone }}">{{ block.settings.contact_phone }}</a>
+    </p>
+    <p class="contact-whatsapp">WhatsApp:
+      <a href="https://wa.me/{{ block.settings.contact_whatsapp | remove: ' ' | remove: '+' | remove: '(' | remove: ')' | remove: '-' }}" target="_blank" rel="noopener noreferrer">{{ block.settings.contact_whatsapp }}</a>
+    </p>
+    <p class="contact-email">Email:
+      <a href="mailto:{{ block.settings.contact_email }}">{{ block.settings.contact_email }}</a>
+    </p>
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Contact Us",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Contact heading",
+        "default": "Contact Us"
+      },
+      {
+        "type": "text",
+        "id": "contact_address",
+        "label": "Contact Address",
+        "default": "123 Main Street, City, Country"
+      },
+      {
+        "type": "text",
+        "id": "contact_phone",
+        "label": "Contact Phone",
+        "default": "+1 (555) 123-4567"
+      },
+      {
+        "type": "text",
+        "id": "contact_whatsapp",
+        "label": "Contact WhatsApp",
+        "default": "+1 (555) 987-6543"
+      }, {
+        "type": "text",
+        "id": "contact_email",
+        "label": "Contact Email",
+        "default": "info@arabicdates.pk"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Contact Us"
+      }
+    ]
+  }
+{% endschema %}

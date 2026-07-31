@@ -1,0 +1,113 @@
+{{ 'testimonial-bar.css' | asset_url | stylesheet_tag }}
+<div id="testimonial-{{ section.id }}" class="testimonial-bar">   
+    <div class="scrolling-wrapper">
+       {% content_for 'blocks' %}
+    </div>
+</div>
+<style>
+ #testimonial-{{ section.id }} {
+  --spacing: {{ section.settings.spacing }}px;
+}
+</style>
+{% schema %}
+{
+  "name": "Testimonials Bar",
+  "settings": [
+{
+      "type": "select",
+      "id": "direction",
+      "label": "Scroll Direction",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+  "type": "range",
+  "id": "spacing",
+  "label": "Inner Spacing",
+  "min": 0,
+  "max": 200,
+  "step": 10,
+  "unit": "px",
+  "default": 60
+}, {
+  "type": "range",
+  "id": "speed",
+  "label": "Scroll Speed",
+  "min": 0,
+  "max": 5,
+  "step": 0.1,
+  "default": 1
+}
+  ],
+   "blocks": [
+    {
+      "type": "@theme"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials Bar",
+      "category": "Testimonials"
+    }
+  ]
+}
+{% endschema %}
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+  const bar = document.querySelector("#testimonial-{{ section.id }}");
+  const wrapper = bar.querySelector(".scrolling-wrapper");
+
+  if (!wrapper) return;
+
+  const GAP = {{ section.settings.spacing | json }};
+  const speed = {{ section.settings.speed | json }};
+  const direction = {{ section.settings.direction | json }};
+
+  // Save original items
+  const originalItems = [...wrapper.children];
+
+  // Create 3 copies total
+  for (let i = 0; i < 2; i++) {
+    originalItems.forEach((item) => {
+      wrapper.appendChild(item.cloneNode(true));
+    });
+  }
+
+  // Calculate width of one original set
+  const oneSetWidth =
+  wrapper.children[originalItems.length].getBoundingClientRect().left -
+  wrapper.children[0].getBoundingClientRect().left;
+  
+  // Initial position
+  let position = direction === "left" ? 0 : -oneSetWidth;
+
+  function animate() {
+    if (direction === "left") {
+      position -= speed;
+      if (position <= -oneSetWidth) {
+        position = 0;
+      }
+    } else {
+      position += speed;
+
+      if (position >= 0) {
+        position = -oneSetWidth;
+      }
+    }
+
+    wrapper.style.transform = `translateX(${position}px)`;
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+});
+</script>
