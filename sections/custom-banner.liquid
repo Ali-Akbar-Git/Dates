@@ -1,0 +1,33 @@
+<div class="banner-image">
+  <img
+    src="{{ section.settings.banner_image |image_url: width: 2000 }}"
+    alt="Banner Image"
+    width="{{ section.settings.banner_image.width }}"
+    height="{{ section.settings.banner_image.height }}">
+</div>
+<style>
+  .banner-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+  }
+</style>
+{% schema %}
+  {
+    "name": "Banner Image",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "banner_image",
+        "label": "Banner Image",
+        "info": "Upload a banner image to display"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Banner Image"
+      }
+    ]
+  }
+{% endschema %}

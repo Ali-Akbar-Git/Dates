@@ -6,11 +6,20 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */ {
+ */
+{
   "sections": {
     "main": {
-      "type": "custom-product"
+      "type": "custom-product",
+      "settings": {
+        "variant_unit": "Weight",
+        "whatsapp_number": "923420696209",
+        "low_stock_limit": 5,
+        "banner_image": "shopify://shop_images/ban2.png"
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }

@@ -9,35 +9,90 @@ const variantButtons = document.querySelectorAll(".variant-button");
 const salePrice = document.querySelector(".sale-price");
 const regularPrice = document.querySelector(".regular-price");
 const bargainButton = document.querySelector(".product-bargin-button");
-const addToCartButtonText = addToCartButton?.querySelector(".add-to-cart-button-text");
-const imageDrawer = document.getElementById("productImageDrawer");
-const drawerMainImage = document.getElementById("drawerMainImage");
-const drawerThumbnails = Array.from(
-  document.querySelectorAll(".image-drawer-thumbnail"),
+const addToCartButtonText = addToCartButton?.querySelector(
+  ".add-to-cart-button-text",
 );
-const drawerCloseButtons = document.querySelectorAll("[data-drawer-close]");
-const drawerPreviousButton = document.querySelector(
-  ".image-drawer-previous",
-);
-const drawerNextButton = document.querySelector(".image-drawer-next");
+const fullImageDrawer = document.querySelector(".full-image-drawer");
+const fullMainProductImage = document.getElementById("fullMainProductImage");
+const previousImageButton = document.querySelector(".image-previous-button");
+const nextImageButton = document.querySelector(".image-next-button");
+const innerNextButton = document.getElementById("innerNextButton");
+const innerPreviousButton = document.getElementById("innerPreviousButton");
+const innerCloseButton = document.getElementById("innerCloseButton");
+const stockStatus = document.querySelector(".product-stock-status");
+const stockStatusText = document.querySelector(".stock-status-text");
+const lowStockLimit = Number(stockStatus?.dataset.lowStockLimit || 5);
+const deliveryEstimate = document.querySelector(".delivery-estimate");
 
-let activeDrawerImageIndex = 0;
-let previouslyFocusedElement = null;
+function updateImageListHeight() {
+  if (!mainImage || !imageList) return;
 
-imageList.style.height = `${mainImage?.offsetHeight}px`;
-thumbnails.forEach((thumbnail) => {
-  thumbnail.addEventListener("click", () => {
-    const newImageUrl = thumbnail.dataset.imageUrl;
-    const thumbnailImage = thumbnail.querySelector("img");
+  imageList.style.height = `${mainImage.offsetHeight}px`;
+}
 
-    mainImage.src = newImageUrl;
-    mainImage.alt = thumbnailImage.alt;
+mainImage?.addEventListener("load", updateImageListHeight);
+window.addEventListener("resize", updateImageListHeight);
 
-    thumbnails.forEach(function (item) {
-      item.classList.remove("active");
-    });
-    thumbnail.classList.add("active");
+if (mainImage?.complete && mainImage.naturalWidth > 0) {
+  requestAnimationFrame(updateImageListHeight);
+}
+function getCurrentImageIndex() {
+  return Array.from(thumbnails).findIndex((thumbnail) =>
+    thumbnail.classList.contains("active"),
+  );
+}
+
+function selectProductImage(index) {
+  if (!mainImage || !thumbnails.length) return;
+
+  const normalizedIndex = (index + thumbnails.length) % thumbnails.length;
+
+  const selectedThumbnail = thumbnails[normalizedIndex];
+  const thumbnailImage = selectedThumbnail.querySelector("img");
+  const newImageUrl = selectedThumbnail?.dataset.imageUrl;
+  const fullImageUrl = selectedThumbnail?.dataset.fullImageUrl;
+
+  if (!newImageUrl) return;
+
+  mainImage.src = newImageUrl;
+  mainImage.dataset.fullImageUrl = fullImageUrl;
+  mainImage.alt = thumbnailImage?.alt || "";
+
+  if (fullMainProductImage) {
+    fullMainProductImage.src = fullImageUrl || newImageUrl;
+    fullMainProductImage.alt = thumbnailImage?.alt || "";
+  }
+
+  thumbnails.forEach((thumbnail) => {
+    thumbnail.classList.remove("active");
   });
+
+  selectedThumbnail.classList.add("active");
+
+  selectedThumbnail.scrollIntoView({
+    behavior: "smooth",
+    block: "nearest",
+  });
+}
+
+thumbnails.forEach((thumbnail, index) => {
+  thumbnail.addEventListener("click", () => {
+    selectProductImage(index);
+  });
+});
+
+previousImageButton?.addEventListener("click", (event) => {
+  event.stopPropagation();
+
+  const currentIndex = getCurrentImageIndex();
+  selectProductImage(currentIndex - 1);
+});
+
+nextImageButton?.addEventListener("click", (event) => {
+  event.stopPropagation();
+
+  const currentIndex = getCurrentImageIndex();
+  selectProductImage(currentIndex + 1);
 });
 window.addEventListener("load", () => {
   thumbnails.forEach((thumbnail) => {
@@ -144,11 +199,22 @@ variantButtons.forEach((variantButton) => {
     const price = variantButton.dataset.price;
     const regularPriceValue = variantButton.dataset.regularPrice;
     const isAvailable = variantButton.dataset.available === "true";
+    const inventoryQuantity = Number(
+      variantButton.dataset.inventoryQuantity || 0,
+    );
+    const inventoryManagement = variantButton.dataset.inventoryManagement;
+    const inventoryPolicy = variantButton.dataset.inventoryPolicy;
+    const variantImageId = variantButton.dataset.imageId;
 
     variantButtons.forEach((button) => {
       button.classList.remove("active");
     });
     variantButton.classList.add("active");
+    thumbnails.forEach((thumbnail, index) => {
+      if (thumbnail.dataset.imageId === variantImageId) {
+        selectProductImage(index);
+      }
+    });
     addToCartButton.dataset.variantId = variantId;
     addToCartButton.disabled = !isAvailable;
     if (bargainButton) {
@@ -168,117 +234,443 @@ variantButtons.forEach((variantButton) => {
         ? "Add to cart"
         : "Sold out";
     }
+    if (stockStatus && stockStatusText) {
+      stockStatus.classList.remove("low-stock", "sold-out");
+
+      if (!isAvailable) {
+        stockStatus.classList.add("sold-out");
+        stockStatusText.textContent = "Sold out";
+      } else if (
+        inventoryManagement &&
+        inventoryPolicy !== "continue" &&
+        inventoryQuantity > 0 &&
+        inventoryQuantity <= lowStockLimit
+      ) {
+        stockStatus.classList.add("low-stock");
+        stockStatusText.textContent = `Only ${inventoryQuantity} left in stock`;
+      } else {
+        stockStatusText.textContent = "In stock";
+      }
+    }
   });
 });
-function updateDrawerImage(index) {
-  if (!drawerThumbnails.length || !drawerMainImage) return;
-
-  if (index < 0) {
-    index = drawerThumbnails.length - 1;
-  }
-
-  if (index >= drawerThumbnails.length) {
-    index = 0;
-  }
-
-  activeDrawerImageIndex = index;
-
-  const activeThumbnail = drawerThumbnails[activeDrawerImageIndex];
-  const imageUrl = activeThumbnail.dataset.drawerImage;
-  const imageAlt = activeThumbnail.dataset.drawerAlt || "";
-
-  drawerMainImage.src = imageUrl;
-  drawerMainImage.alt = imageAlt;
-
-  drawerThumbnails.forEach((thumbnail, thumbnailIndex) => {
-    const isActive = thumbnailIndex === activeDrawerImageIndex;
-
-    thumbnail.classList.toggle("active", isActive);
-    thumbnail.setAttribute("aria-current", isActive ? "true" : "false");
-  });
-
-  activeThumbnail.scrollIntoView({
-    behavior: "smooth",
-    block: "nearest",
-    inline: "nearest",
-  });
-}
-
-function openImageDrawer(index = 0) {
-  if (!imageDrawer) return;
-
-  previouslyFocusedElement = document.activeElement;
-
-  updateDrawerImage(index);
-
-  imageDrawer.classList.add("open");
-  imageDrawer.setAttribute("aria-hidden", "false");
-  document.body.classList.add("image-drawer-open");
-
-  imageDrawer.querySelector(".image-drawer-close")?.focus();
-}
-
-function closeImageDrawer() {
-  if (!imageDrawer) return;
-
-  imageDrawer.classList.remove("open");
-  imageDrawer.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("image-drawer-open");
-
-  previouslyFocusedElement?.focus();
-}
-
-/*
- * Open the drawer from the main product image.
- * It attempts to match the currently displayed image.
- */
 mainImage?.addEventListener("click", () => {
-  const currentImageUrl = mainImage.currentSrc || mainImage.src;
+  resetFullImageZoom();
+  if (fullMainProductImage) {
+    fullMainProductImage.src =
+      mainImage.dataset.fullImageUrl || mainImage.currentSrc || mainImage.src;
+    fullMainProductImage.alt = mainImage.alt;
+  }
 
-  const matchingIndex = drawerThumbnails.findIndex((thumbnail) => {
-    const drawerImageUrl = thumbnail.dataset.drawerImage;
+  fullImageDrawer?.classList.add("active");
+});
+function addBusinessDays(startDate, daysToAdd) {
+  let date = new Date(startDate);
+  let addedDays = 0;
 
-    if (!drawerImageUrl) return false;
+  while (addedDays < daysToAdd) {
+    date.setDate(date.getDate() + 1);
 
-    return (
-      currentImageUrl.includes(drawerImageUrl) ||
-      drawerImageUrl.includes(currentImageUrl)
-    );
-  });
+    const day = date.getDay(); // 0 = Sunday, 6 = Saturday
 
-  openImageDrawer(matchingIndex >= 0 ? matchingIndex : 0);
+    if (day !== 0 && day !== 6) {
+      addedDays++;
+    }
+  }
+
+  return date;
+}
+const today = new Date();
+const lowerDays = addBusinessDays(today, 5);
+const upperDays = addBusinessDays(today, 7);
+const lowerDate = lowerDays.toLocaleDateString("en-GB", {
+  month: "short",
+  day: "2-digit",
+});
+const upperDate = upperDays.toLocaleDateString("en-GB", {
+  month: "short",
+  day: "2-digit",
 });
 
-drawerThumbnails.forEach((thumbnail, index) => {
-  thumbnail.addEventListener("click", () => {
-    updateDrawerImage(index);
-  });
-});
-
-drawerPreviousButton?.addEventListener("click", () => {
-  updateDrawerImage(activeDrawerImageIndex - 1);
-});
-
-drawerNextButton?.addEventListener("click", () => {
-  updateDrawerImage(activeDrawerImageIndex + 1);
-});
-
-drawerCloseButtons.forEach((button) => {
-  button.addEventListener("click", closeImageDrawer);
-});
-
+if (deliveryEstimate) {
+  deliveryEstimate.textContent = `🚚 Estimated delivery: ${lowerDate} – ${upperDate}`;
+}
 document.addEventListener("keydown", (event) => {
-  if (!imageDrawer?.classList.contains("open")) return;
+  const isDrawerOpen = fullImageDrawer?.classList.contains("active");
 
-  if (event.key === "Escape") {
-    closeImageDrawer();
+  // Do not change images while typing in an input or textarea
+  const activeElement = document.activeElement;
+  const isTyping =
+    activeElement?.tagName === "INPUT" ||
+    activeElement?.tagName === "TEXTAREA" ||
+    activeElement?.isContentEditable;
+
+  if (isTyping) return;
+
+  if (event.key === "ArrowRight") {
+    event.preventDefault();
+
+    if (isDrawerOpen) {
+      resetFullImageZoom();
+    }
+
+    const currentIndex = getCurrentImageIndex();
+    selectProductImage(currentIndex + 1);
   }
 
   if (event.key === "ArrowLeft") {
-    updateDrawerImage(activeDrawerImageIndex - 1);
+    event.preventDefault();
+
+    if (isDrawerOpen) {
+      resetFullImageZoom();
+    }
+
+    const currentIndex = getCurrentImageIndex();
+    selectProductImage(currentIndex - 1);
   }
 
-  if (event.key === "ArrowRight") {
-    updateDrawerImage(activeDrawerImageIndex + 1);
+  if (event.key === "Escape" && isDrawerOpen) {
+    event.preventDefault();
+
+    if (isFullImageZoomed) {
+      resetFullImageZoom();
+    } else {
+      fullImageDrawer?.classList.remove("active");
+    }
   }
 });
+fullImageDrawer?.addEventListener("click", (event) => {
+  const clickedImage = event.target === fullMainProductImage;
+  const clickedNavigation = event.target.closest(
+    ".inner-image-navigation-button",
+  );
+
+  if (!clickedImage && !clickedNavigation) {
+    resetFullImageZoom();
+    fullImageDrawer.classList.remove("active");
+  }
+});
+let isFullImageZoomed = false;
+let isDraggingZoomedImage = false;
+let hasDraggedZoomedImage = false;
+
+let zoomDragStartX = 0;
+let zoomDragStartY = 0;
+
+let zoomTranslateX = 0;
+let zoomTranslateY = 0;
+
+let zoomStartTranslateX = 0;
+let zoomStartTranslateY = 0;
+
+function resetFullImageZoom() {
+  if (!fullMainProductImage) return;
+
+  isFullImageZoomed = false;
+  isDraggingZoomedImage = false;
+  hasDraggedZoomedImage = false;
+
+  zoomTranslateX = 0;
+  zoomTranslateY = 0;
+  zoomStartTranslateX = 0;
+  zoomStartTranslateY = 0;
+
+  fullMainProductImage.classList.remove("zoomed", "dragging");
+  fullMainProductImage.style.transformOrigin = "center center";
+  fullMainProductImage.style.removeProperty("--zoom-x");
+  fullMainProductImage.style.removeProperty("--zoom-y");
+}
+function updateZoomedImagePosition() {
+  if (!fullMainProductImage) return;
+
+  fullMainProductImage.style.setProperty("--zoom-x", `${zoomTranslateX}px`);
+
+  fullMainProductImage.style.setProperty("--zoom-y", `${zoomTranslateY}px`);
+}
+
+fullMainProductImage?.addEventListener("pointerdown", (event) => {
+  if (!isFullImageZoomed) return;
+
+  event.preventDefault();
+  event.stopPropagation();
+
+  isDraggingZoomedImage = true;
+  hasDraggedZoomedImage = false;
+
+  zoomDragStartX = event.clientX;
+  zoomDragStartY = event.clientY;
+
+  zoomStartTranslateX = zoomTranslateX;
+  zoomStartTranslateY = zoomTranslateY;
+
+  fullMainProductImage.classList.add("dragging");
+  fullMainProductImage.setPointerCapture(event.pointerId);
+});
+
+fullMainProductImage?.addEventListener("pointermove", (event) => {
+  if (!isDraggingZoomedImage || !isFullImageZoomed) return;
+
+  event.preventDefault();
+
+  const movedX = event.clientX - zoomDragStartX;
+  const movedY = event.clientY - zoomDragStartY;
+
+  if (Math.abs(movedX) > 4 || Math.abs(movedY) > 4) {
+    hasDraggedZoomedImage = true;
+  }
+
+  zoomTranslateX = zoomStartTranslateX + movedX;
+  zoomTranslateY = zoomStartTranslateY + movedY;
+
+  updateZoomedImagePosition();
+});
+
+function stopZoomedImageDrag(event) {
+  if (!isDraggingZoomedImage) return;
+
+  isDraggingZoomedImage = false;
+  fullMainProductImage?.classList.remove("dragging");
+
+  if (
+    event?.pointerId !== undefined &&
+    fullMainProductImage?.hasPointerCapture(event.pointerId)
+  ) {
+    fullMainProductImage.releasePointerCapture(event.pointerId);
+  }
+}
+
+fullMainProductImage?.addEventListener("pointerup", stopZoomedImageDrag);
+
+fullMainProductImage?.addEventListener("pointercancel", stopZoomedImageDrag);
+
+fullMainProductImage?.addEventListener(
+  "lostpointercapture",
+  stopZoomedImageDrag,
+);
+
+fullMainProductImage?.addEventListener("click", (event) => {
+  event.stopPropagation();
+
+  /*
+   * Do not remove zoom after dragging.
+   * Pointer dragging normally generates a click afterward.
+   */
+  if (hasDraggedZoomedImage) {
+    hasDraggedZoomedImage = false;
+    return;
+  }
+
+  if (isFullImageZoomed) {
+    resetFullImageZoom();
+    return;
+  }
+
+  const imageRect = fullMainProductImage.getBoundingClientRect();
+
+  const cursorX = event.clientX - imageRect.left;
+  const cursorY = event.clientY - imageRect.top;
+
+  const originX = Math.max(0, Math.min(100, (cursorX / imageRect.width) * 100));
+
+  const originY = Math.max(
+    0,
+    Math.min(100, (cursorY / imageRect.height) * 100),
+  );
+
+  zoomTranslateX = 0;
+  zoomTranslateY = 0;
+
+  fullMainProductImage.style.setProperty("--zoom-x", "0px");
+  fullMainProductImage.style.setProperty("--zoom-y", "0px");
+  fullMainProductImage.style.transformOrigin = `${originX}% ${originY}%`;
+  fullMainProductImage.classList.add("zoomed");
+
+  isFullImageZoomed = true;
+});
+
+innerCloseButton?.addEventListener("click", (event) => {
+  event.stopPropagation();
+  resetFullImageZoom();
+  fullImageDrawer?.classList.remove("active");
+});
+
+innerNextButton?.addEventListener("click", (event) => {
+  event.stopPropagation();
+  resetFullImageZoom();
+
+  const currentIndex = getCurrentImageIndex();
+  selectProductImage(currentIndex + 1);
+});
+
+innerPreviousButton?.addEventListener("click", (event) => {
+  event.stopPropagation();
+  resetFullImageZoom();
+
+  const currentIndex = getCurrentImageIndex();
+  selectProductImage(currentIndex - 1);
+});
+/* =========================================
+   PRODUCT IMAGE SWIPE
+   Enabled at 1024px and below
+========================================= */
+const swipeMediaQuery = window.matchMedia("(max-width: 1024px)");
+
+let swipeStartX = 0;
+let swipeStartY = 0;
+let swipeEndX = 0;
+let swipeEndY = 0;
+let swipeInProgress = false;
+let blockNextClick = false;
+
+const minimumSwipeDistance = 50;
+
+function startImageSwipe(event) {
+  if (!swipeMediaQuery.matches || event.touches.length !== 1) return;
+
+  const drawerIsOpen = fullImageDrawer?.classList.contains("active");
+
+  /*
+   * When the drawer image is zoomed, touch movement should drag
+   * the zoomed image instead of changing product images.
+   */
+  if (drawerIsOpen && isFullImageZoomed) return;
+  const touch = event.touches[0];
+
+  swipeStartX = touch.clientX;
+  swipeStartY = touch.clientY;
+  swipeEndX = swipeStartX;
+  swipeEndY = swipeStartY;
+  swipeInProgress = true;
+}
+
+function moveImageSwipe(event) {
+  const drawerIsOpen = fullImageDrawer?.classList.contains("active");
+
+  if (
+    !swipeMediaQuery.matches ||
+    !swipeInProgress ||
+    event.touches.length !== 1 ||
+    (drawerIsOpen && isFullImageZoomed)
+  ) {
+    return;
+  }
+
+  const touch = event.touches[0];
+
+  swipeEndX = touch.clientX;
+  swipeEndY = touch.clientY;
+
+  const horizontalDistance = Math.abs(swipeEndX - swipeStartX);
+  const verticalDistance = Math.abs(swipeEndY - swipeStartY);
+
+  /*
+   * Stop the browser from moving horizontally while swiping images.
+   * Vertical page scrolling will continue working normally.
+   */
+  if (horizontalDistance > verticalDistance) {
+    event.preventDefault();
+  }
+}
+
+function endImageSwipe() {
+  const drawerIsOpen = fullImageDrawer?.classList.contains("active");
+
+  if (drawerIsOpen && isFullImageZoomed) {
+    swipeInProgress = false;
+    return;
+  }
+  if (!swipeMediaQuery.matches || !swipeInProgress) return;
+
+  swipeInProgress = false;
+
+  const horizontalDistance = swipeEndX - swipeStartX;
+  const verticalDistance = swipeEndY - swipeStartY;
+
+  const isHorizontalSwipe =
+    Math.abs(horizontalDistance) > Math.abs(verticalDistance);
+
+  const passedMinimumDistance =
+    Math.abs(horizontalDistance) >= minimumSwipeDistance;
+
+  if (!isHorizontalSwipe || !passedMinimumDistance) return;
+
+  blockNextClick = true;
+
+  if (drawerIsOpen) {
+    resetFullImageZoom();
+  }
+
+  const currentIndex = getCurrentImageIndex();
+
+  if (horizontalDistance < 0) {
+    // Swipe left: show next image
+    selectProductImage(currentIndex + 1);
+  } else {
+    // Swipe right: show previous image
+    selectProductImage(currentIndex - 1);
+  }
+
+  /*
+   * A touch swipe may create a click immediately afterward.
+   * Temporarily block it so the drawer does not open, close, or zoom.
+   */
+  window.setTimeout(() => {
+    blockNextClick = false;
+  }, 300);
+}
+
+function cancelImageSwipe() {
+  swipeInProgress = false;
+}
+
+/* Main product image swipe */
+mainImage?.addEventListener("touchstart", startImageSwipe, {
+  passive: true,
+});
+
+mainImage?.addEventListener("touchmove", moveImageSwipe, {
+  passive: false,
+});
+
+mainImage?.addEventListener("touchend", endImageSwipe);
+
+mainImage?.addEventListener("touchcancel", cancelImageSwipe);
+
+/* Fullscreen drawer swipe */
+fullImageDrawer?.addEventListener("touchstart", startImageSwipe, {
+  passive: true,
+});
+
+fullImageDrawer?.addEventListener("touchmove", moveImageSwipe, {
+  passive: false,
+});
+
+fullImageDrawer?.addEventListener("touchend", endImageSwipe);
+
+fullImageDrawer?.addEventListener("touchcancel", cancelImageSwipe);
+
+/*
+ * Block clicks created by a completed swipe.
+ * Capture mode runs before your existing click handlers.
+ */
+mainImage?.addEventListener(
+  "click",
+  (event) => {
+    if (!blockNextClick) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  },
+  true,
+);
+
+fullImageDrawer?.addEventListener(
+  "click",
+  (event) => {
+    if (!blockNextClick) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  },
+  true,
+);

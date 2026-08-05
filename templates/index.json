@@ -9,6 +9,13 @@
  */
 {
   "sections": {
+    "product_banner": {
+      "type": "custom-banner",
+      "name": "Banner Image",
+      "settings": {
+        "banner_image": "shopify://shop_images/banner.png"
+      }
+    },
     "product_grid_RtaYWH": {
       "type": "product-grid",
       "name": "Product Grid",
@@ -310,6 +317,7 @@
     }
   },
   "order": [
+    "product_banner",
     "product_grid_RtaYWH",
     "product_grid_YaTrJU",
     "testimonial_bar_VidKEk",

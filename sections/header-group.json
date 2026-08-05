@@ -68,7 +68,7 @@
       "settings": {
         "speed": 5,
         "section_width": "page-width",
-        "background_color": "#8B6B2E",
+        "background_color": "#8b6b2e",
         "divider_width": 1,
         "divider_color": "{{ settings.color_palette.color2 }}",
         "padding-block-start": 15,
@@ -77,9 +77,55 @@
     },
     "custom_header_7GeYn7": {
       "type": "custom-header",
+      "blocks": {
+        "popular_search_TtJYCD": {
+          "type": "popular_search",
+          "settings": {
+            "search_term": "Majdool"
+          }
+        },
+        "popular_search_ebnMgL": {
+          "type": "popular_search",
+          "settings": {
+            "search_term": ""
+          }
+        },
+        "popular_search_dL7APP": {
+          "type": "popular_search",
+          "settings": {
+            "search_term": "Qalmi"
+          }
+        },
+        "popular_search_zDjPXF": {
+          "type": "popular_search",
+          "settings": {
+            "search_term": "Sukkri"
+          }
+        },
+        "popular_search_NEWzNC": {
+          "type": "popular_search",
+          "settings": {
+            "search_term": "Mabroom"
+          }
+        },
+        "popular_search_xbnjqt": {
+          "type": "popular_search",
+          "settings": {
+            "search_term": "Ajwa"
+          }
+        }
+      },
+      "block_order": [
+        "popular_search_TtJYCD",
+        "popular_search_ebnMgL",
+        "popular_search_dL7APP",
+        "popular_search_zDjPXF",
+        "popular_search_NEWzNC",
+        "popular_search_xbnjqt"
+      ],
       "name": "Custom Header",
       "settings": {
-        "collection": "col1",
+        "collection": "col2",
         "free-shipping": 3000,
         "discount-threshold": 5000,
         "discount-percentage": 10,
@@ -87,5 +133,8 @@
       }
     }
   },
-  "order": ["header_announcements_9jGBFp", "custom_header_7GeYn7"]
+  "order": [
+    "header_announcements_9jGBFp",
+    "custom_header_7GeYn7"
+  ]
 }

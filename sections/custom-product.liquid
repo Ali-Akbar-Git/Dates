@@ -5,7 +5,11 @@
     <div class="image-section">
       <div id="image-list">
         {% for image in product.images %}
-          <div class="list-image-box{% if image == product.featured_image %} active{% endif %}" data-image-url="{{ image | image_url: width: 1200 }}">
+          <div
+            class="list-image-box{% if image == product.featured_image %} active{% endif %}"
+            data-image-url="{{ image | image_url: width: 1200 }}"
+            data-full-image-url="{{ image | image_url: width: 2000 }}"
+            data-image-id="{{ image.id }}">
             <img
               src="{{ image | image_url: width: 600 }}"
               alt="{{ image.alt }}"
@@ -17,19 +21,54 @@
         {% endfor %}
       </div>
       <div class="main-image">
+        <button
+          type="button"
+          class="image-navigation-button image-previous-button"
+          aria-label="Previous product image">
+          {% render 'icon-left' %}
+        </button>
         <img
           id="mainProductImage"
           src="{{ product.featured_image | image_url: width: 1200 }}"
+          data-full-image-url="{{ product.featured_image | image_url: width: 2000 }}"
           alt="{{ product.featured_image.alt | escape }}"
           width="{{ product.featured_image.width }}"
           height="{{ product.featured_image.height }}">
+        <button
+          type="button"
+          class="image-navigation-button image-next-button"
+          aria-label="Next product image">
+          {% render 'icon-right' %}
+        </button>
       </div>
     </div>
     <div class="product-info-section">
       <h1 class="product-title">{{ product.title }}</h1>
+      <div class="product-rating">
+        <span class="rating-stars">★★★★★</span>
+        <span class="rating-text">4.8 (124 Reviews)</span>
+      </div>
       <div class="price-section">
         <span class="sale-price">{{ product.selected_or_first_available_variant.price | money }}</span>
         <span class="regular-price">{{ product.selected_or_first_available_variant.price | times: 125 | divided_by: 100 | money }}</span>
+      </div>
+      {% assign selected_variant = product.selected_or_first_available_variant %}
+
+      <div class="product-stock-status{% unless selected_variant.available %} sold-out{% elsif selected_variant.inventory_management and selected_variant.inventory_quantity <= section.settings.low_stock_limit %} low-stock{% endunless %}">
+        <span class="stock-dot"></span>
+
+        <span class="stock-status-text">
+          {% unless selected_variant.available %}
+            Sold out
+          {% elsif selected_variant.inventory_management and selected_variant.inventory_quantity <= section.settings.low_stock_limit %}
+            Only {{ selected_variant.inventory_quantity }} left in stock
+          {% else %}
+            In stock
+          {% endunless %}
+        </span>
+      </div>
+      <div class="delivery-estimate">
+        🚚 Estimated delivery: 4–7 business days
       </div>
       <div class="product-variant-section">
         <span class="product-unit-span">{{ section.settings.variant_unit }}:
@@ -48,6 +87,10 @@
             data-price="{{ variant.price | money }}"
             data-regular-price="{{ variant.price | times: 125 | divided_by: 100 | money }}"
             data-available="{{ variant.available }}"
+            data-inventory-quantity="{{ variant.inventory_quantity }}"
+            data-inventory-management="{{ variant.inventory_management }}"
+            data-inventory-policy="{{ variant.inventory_policy }}"
+            data-image-id="{{ variant.featured_image.id }}"
             {% unless variant.available %}
             disabled
             {% endunless %}>
@@ -58,7 +101,7 @@
       <div class="product-add-button-wrapper ">
         <div class="product-quantity-box">
           <div class="product-button-box">
-            <button class="product-quantity-button minus">
+            <button type="button" class="product-quantity-button minus">
               {% render 'icon-minus' %}
             </button>
           </div>
@@ -68,7 +111,7 @@
             inputmode="numeric"
             value="1">
           <div class="product-button-box">
-            <button class="product-quantity-button plus">
+            <button type="button" class="product-quantity-button plus">
               {% render 'icon-plus' %}
             </button>
           </div>
@@ -108,87 +151,56 @@ Can I get more discount on this product?
             disabled
             {% endunless %}>
             <span class="bargin-button-text">
-              Need More Discount? Bargin Now
+              Need More Discount? Bargain Now
             </span>
           </button>
         </a>
       </div>
+      <div class="trust-badges">
+        <div class="trust-badge">
+          🔒 Secure Payment
+        </div>
+
+        <div class="trust-badge">
+          🚚 Fast Delivery
+        </div>
+
+        <div class="trust-badge">
+          ↩️ Easy Returns
+        </div>
+      </div>
     </div>
   </div>
 </div>
-<div
-  id="productImageDrawer"
-  class="image-drawer"
-  aria-hidden="true"
->
-  <div
-    class="image-drawer-overlay"
-    data-drawer-close
-  ></div>
-
-  <div
-    class="image-drawer-panel"
-    role="dialog"
-    aria-modal="true"
-    aria-label="Product image gallery"
-  >
+<div class="full-image-drawer">
+  <img
+    id="fullMainProductImage"
+    src="{{ product.featured_image | image_url: width: 2000 }}"
+    alt="{{ product.featured_image.alt | escape }}"
+    width="{{ product.featured_image.width }}"
+    height="{{ product.featured_image.height }}">
+  <div class="inner-image-navigation-buttons">
     <button
       type="button"
-      class="image-drawer-close"
-      data-drawer-close
-      aria-label="Close image gallery"
-    >
-      &times;
+      id="innerPreviousButton"
+      class="inner-image-navigation-button"
+      aria-label="Previous product image">
+      {% render 'icon-left' %}
     </button>
-
-    <div class="image-drawer-content">
-      <div class="image-drawer-thumbnails">
-        {% for image in product.images %}
-          <button
-            type="button"
-            class="image-drawer-thumbnail{% if image == product.featured_image %} active{% endif %}"
-            data-drawer-image="{{ image | image_url: width: 1800 }}"
-            data-drawer-alt="{{ image.alt | default: product.title | escape }}"
-            data-image-index="{{ forloop.index0 }}"
-            aria-label="View product image {{ forloop.index }}"
-          >
-            <img
-              src="{{ image | image_url: width: 180 }}"
-              alt="{{ image.alt | default: product.title | escape }}"
-              width="90"
-              height="90"
-              loading="lazy"
-            >
-          </button>
-        {% endfor %}
-      </div>
-
-      <div class="image-drawer-main">
-        <button
-          type="button"
-          class="image-drawer-navigation image-drawer-previous"
-          aria-label="Previous image"
-        >
-          &#10094;
-        </button>
-
-        <div class="image-drawer-image-wrapper">
-          <img
-            id="drawerMainImage"
-            src="{{ product.featured_image | image_url: width: 1800 }}"
-            alt="{{ product.featured_image.alt | default: product.title | escape }}"
-          >
-        </div>
-
-        <button
-          type="button"
-          class="image-drawer-navigation image-drawer-next"
-          aria-label="Next image"
-        >
-          &#10095;
-        </button>
-      </div>
-    </div>
+    <button
+      type="button"
+      id="innerCloseButton"
+      class="inner-image-navigation-button"
+      aria-label="Close product image">
+      {% render 'icon-close' %}
+    </button>
+    <button
+      type="button"
+      id="innerNextButton"
+      class="inner-image-navigation-button"
+      aria-label="Next product image">
+      {% render 'icon-right' %}
+    </button>
   </div>
 </div>
 {% schema %}
@@ -206,6 +218,20 @@ Can I get more discount on this product?
         "label": "WhatsApp number",
         "info": "Enter the number in international format without + or spaces. Example: 922137170069",
         "default": "923420696209"
+      }, {
+        "type": "range",
+        "id": "low_stock_limit",
+        "label": "Low stock limit",
+        "min": 1,
+        "max": 50,
+        "step": 1,
+        "default": 5
+      },
+      {
+        "type": "image_picker",
+        "id": "banner_image",
+        "label": "Banner Image",
+        "info": "Upload a banner image to display below the product section."
       }
     ],
     "presets": [

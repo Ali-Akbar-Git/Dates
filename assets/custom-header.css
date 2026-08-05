@@ -4,11 +4,11 @@
   flex-direction: column;
 }
 .header {
-  padding: 20px;
+  padding:  20px;
   align-items: center;
   display: flex;
   justify-content: space-between;
-  height: 95px;
+  height: 120px;
   position: relative;
 }
 .menu-box {
@@ -101,7 +101,7 @@
 .cart-counter {
   position: absolute;
   right: 19px;
-  top: 22px;
+  top: 34px;
   min-width: 20px;
   height: 20px;
   padding: 2px 5px 0;
@@ -119,8 +119,8 @@
 }
 .cart-counter-inner {
   position: absolute;
-  right: -1px;
-  top: 9px;
+  right: 64px;
+  top: 30px;
   min-width: 20px;
   height: 20px;
   padding: 2px 5px 0;
@@ -188,20 +188,19 @@
   opacity: 0;
 }
 .search-1 {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  margin: 0 auto;
-  padding: 0 65px;
-  width: 1600px;
-}
-.search-2 {
   position: relative;
   display: flex;
-  align-items: center;
-  width: 100%;
   justify-content: space-between;
-  gap: 30px;
+  align-items: center;
+  margin: 0 auto;
+  padding: 0 65px;
+  max-width: 1550px;
+}
+.search-2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 .input-search {
   border: none;
@@ -668,10 +667,12 @@
 .submenu-toggle {
   display: none;
 }
-
-@media screen and (max-width: 768px) {
+/* =====================================
+   MOBILE + TABLET (up to 1023px)
+   ===================================== */
+@media screen and (max-width: 1023px) {
   /* =====================================
-     MOBILE HEADER
+     HEADER
      ===================================== */
 
   .header {
@@ -680,16 +681,15 @@
     align-items: center;
     justify-content: flex-end;
     width: 100%;
-    height: 80px;
+    height: 90px;
     padding: 8px 12px;
   }
 
-  /* Menu icon on left */
   .menu-open-button {
     position: absolute;
-    left: 12px;
     top: 50%;
-    transform: translateY(-50%);
+    left: 12px;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -700,7 +700,7 @@
     background: transparent;
     color: #3e2910;
     cursor: pointer;
-    z-index: 2;
+    transform: translateY(-50%);
   }
 
   .menu-open-button svg {
@@ -709,27 +709,25 @@
     height: 22px;
   }
 
-  /* Logo exactly in center */
   .header > .logo-link {
     position: absolute;
     top: 50%;
     left: 50%;
+    z-index: 1;
     width: 100px;
     transform: translate(-50%, -50%);
-    z-index: 1;
   }
 
-  /* Search and cart on right */
   .header > .search-button,
   .header > .cart-button {
     position: static;
     display: flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
     width: 40px;
     height: 42px;
     padding: 9px;
-    flex-shrink: 0;
   }
 
   .header > .search-button svg,
@@ -739,25 +737,25 @@
   }
 
   .cart-counter {
-    top: 16px;
+    top: 21px;
     right: 12px;
+    z-index: 3;
     min-width: 18px;
     height: 18px;
     padding: 1px 4px 0;
     font-size: 10px;
-    z-index: 3;
   }
 
   /* =====================================
-     MOBILE MENU DRAWER
+     MENU DRAWER
      ===================================== */
 
   .menu-box {
     position: fixed;
     top: 0;
-    left: 0;
     bottom: 0;
-    z-index: 100;
+    left: 0;
+    z-index: 15;
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -765,25 +763,25 @@
     width: min(85%, 340px);
     height: 100dvh;
     padding: 75px 20px 25px;
-    box-sizing: border-box;
     overflow-y: auto;
-    z-index: 15;
+    box-sizing: border-box;
+    visibility: hidden;
     background-color: #fefaf7;
     box-shadow: 10px 0 30px rgba(0, 0, 0, 0.15);
     transform: translateX(-105%);
-    visibility: hidden;
     transition:
       transform 0.35s ease,
       visibility 0s linear 0.35s;
   }
+
   .custom-header::after {
     content: "";
     position: fixed;
     inset: 0;
     z-index: 14;
+    visibility: hidden;
     background: rgba(0, 0, 0, 0.45);
     opacity: 0;
-    visibility: hidden;
     pointer-events: none;
     transition:
       opacity 0.35s ease,
@@ -791,8 +789,8 @@
   }
 
   .custom-header.menu-active::after {
-    opacity: 1;
     visibility: visible;
+    opacity: 1;
     pointer-events: auto;
     transition: opacity 0.35s ease;
   }
@@ -805,7 +803,7 @@
 
   .menu-close-button {
     position: absolute;
-    top: 14px;
+    top: 21px;
     right: 14px;
     display: flex;
     align-items: center;
@@ -841,21 +839,21 @@
   }
 
   .menu-item-header > a {
-    flex: 1;
     display: block;
+    flex: 1;
     padding: 15px 0;
   }
 
   .submenu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 40px;
     height: 40px;
     border: none;
     background: transparent;
     color: #3e2910;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   .submenu-toggle svg {
@@ -870,15 +868,15 @@
     position: static;
     display: block;
     max-height: 0;
-    overflow: hidden;
     margin: 0;
     padding: 0 0 0 12px;
+    overflow: hidden;
     visibility: visible;
-    opacity: 1;
-    background: transparent;
     border: none;
     border-radius: 0;
+    background: transparent;
     box-shadow: none;
+    opacity: 1;
     backdrop-filter: none;
     transition: max-height 0.3s ease;
   }
@@ -889,7 +887,7 @@
   }
 
   .sub-menu-item {
-    padding: 8px 0;
+    padding: 6px 8px;
   }
 
   /* =====================================
@@ -900,7 +898,7 @@
     width: 100%;
     height: auto;
     min-height: 0;
-    padding: 14px 12px 16px;
+    padding: 20px 24px;
     box-sizing: border-box;
   }
 
@@ -911,32 +909,31 @@
 
   .search-2 {
     width: 100%;
-    gap: 0;
   }
 
-  .search-2 > .logo-link,
-  .search-2 > .cart-button,
+  .search-1 > .logo-link,
+  .search-1 > .cart-button,
   .cart-counter-inner {
     display: none;
   }
 
   .search-box {
     width: 100%;
-    height: 48px;
+    height: 52px;
     border: 1px solid rgba(62, 41, 16, 0.2);
     border-radius: 8px;
   }
 
   .input-search {
-    font-size: 15px;
-    padding: 0 14px;
+    padding: 0 16px;
+    font-size: 16px;
   }
 
   .submit_button {
-    width: 48px;
+    width: 52px;
+    border-left: none;
     background: #3e2910;
     color: #ffffff;
-    border-left: none;
   }
 
   .popular-search {
@@ -944,35 +941,84 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-start;
-    gap: 8px;
+    gap: 10px;
     width: 100%;
-    margin-top: 14px;
-    overflow: visible;
+    margin-top: 18px;
   }
 
   .popular-search .popular-title {
-    display: block;
     width: 100%;
-    margin: 0 0 2px;
-    white-space: nowrap;
-    font-size: 12px;
-    font-weight: 500;
+    margin: 0 0 6px;
     color: #666666;
+    font-size: 14px;
   }
 
   .popular-link {
     display: inline-flex;
     align-items: center;
     margin: 0;
-    padding: 6px 10px;
+    padding: 8px 14px;
     border-radius: 999px;
     background: #f3ebe4;
+    font-size: 14px;
+  }
+
+  .popular-link::after {
+    content: none;
+  }
+
+  html.menu-open,
+  body.menu-open {
+    overflow: hidden;
+  }
+}
+
+/* =====================================
+   MOBILE OVERRIDES (up to 767px)
+   ===================================== */
+@media screen and (max-width: 767px) {
+  /* Search drawer */
+  .search-container {
+    padding: 14px 12px 16px;
+  }
+
+  .search-2 {
+    gap: 0;
+  }
+
+  .search-box {
+    height: 48px;
+  }
+
+  .input-search {
+    padding: 0 14px;
+    font-size: 15px;
+  }
+
+  .submit_button {
+    width: 48px;
+  }
+
+  .popular-search {
+    gap: 8px;
+    margin-top: 14px;
+    overflow: visible;
+  }
+
+  .popular-search .popular-title {
+    display: block;
+    margin-bottom: 2px;
+    color: #666666;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .popular-link {
+    padding: 6px 10px;
     font-size: 12px;
     line-height: 1.2;
     white-space: nowrap;
-  }
-  .popular-link::after {
-    content: none;
   }
 
   /* =====================================
@@ -1024,9 +1070,9 @@
   }
 
   .item-image {
+    flex-shrink: 0;
     width: 85px;
     height: auto;
-    flex-shrink: 0;
   }
 
   .item-info {
@@ -1048,10 +1094,10 @@
   }
 
   .item-quantity {
-    margin-top: 8px;
     flex-wrap: wrap;
     align-items: center;
     gap: 6px;
+    margin-top: 8px;
   }
 
   .quantity-box {
@@ -1089,309 +1135,5 @@
   .sub-total-text,
   .sub-total {
     font-size: 16px;
-  }
-  html.menu-open,
-  body.menu-open {
-    overflow: hidden;
-  }
-}
-@media (min-width: 768px) and (max-width: 1023px) {
-  /* =====================================
-     MOBILE HEADER
-     ===================================== */
-
-  .header {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    width: 100%;
-    height: 80px;
-    padding: 8px 12px;
-  }
-
-  /* Menu icon on left */
-  .menu-open-button {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    padding: 10px;
-    border: none;
-    background: transparent;
-    color: #3e2910;
-    cursor: pointer;
-    z-index: 2;
-  }
-
-  .menu-open-button svg {
-    display: block;
-    width: 22px;
-    height: 22px;
-  }
-
-  /* Logo exactly in center */
-  .header > .logo-link {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100px;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-  }
-
-  /* Search and cart on right */
-  .header > .search-button,
-  .header > .cart-button {
-    position: static;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 42px;
-    padding: 9px;
-    flex-shrink: 0;
-  }
-
-  .header > .search-button svg,
-  .header > .cart-button svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .cart-counter {
-    top: 16px;
-    right: 12px;
-    min-width: 18px;
-    height: 18px;
-    padding: 1px 4px 0;
-    font-size: 10px;
-    z-index: 3;
-  }
-
-  /* =====================================
-     MOBILE MENU DRAWER
-     ===================================== */
-
-  .menu-box {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-start;
-    width: min(85%, 340px);
-    height: 100dvh;
-    padding: 75px 20px 25px;
-    box-sizing: border-box;
-    overflow-y: auto;
-    z-index: 15;
-    background-color: #fefaf7;
-    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.15);
-    transform: translateX(-105%);
-    visibility: hidden;
-    transition:
-      transform 0.35s ease,
-      visibility 0s linear 0.35s;
-  }
-  .custom-header::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 14;
-    background: rgba(0, 0, 0, 0.45);
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition:
-      opacity 0.35s ease,
-      visibility 0s linear 0.35s;
-  }
-
-  .custom-header.menu-active::after {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transition: opacity 0.35s ease;
-  }
-
-  .menu-box.active {
-    visibility: visible;
-    transform: translateX(0);
-    transition: transform 0.35s ease;
-  }
-
-  .menu-close-button {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    padding: 10px;
-    border: none;
-    background: transparent;
-    color: #3e2910;
-    cursor: pointer;
-  }
-
-  .menu-close-button svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .menu-item {
-    width: 100%;
-    padding: 0;
-    border-bottom: 1px solid rgba(62, 41, 16, 0.15);
-  }
-
-  .menu-item::after {
-    display: none;
-  }
-
-  .menu-item-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .menu-item-header > a {
-    flex: 1;
-    display: block;
-    padding: 15px 0;
-  }
-
-  .submenu-toggle {
-    width: 40px;
-    height: 40px;
-    border: none;
-    background: transparent;
-    color: #3e2910;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .submenu-toggle svg {
-    transition: transform 0.3s ease;
-  }
-
-  .menu-item.submenu-open .submenu-toggle svg {
-    transform: rotate(180deg);
-  }
-
-  .sub-menu {
-    position: static;
-    display: block;
-    max-height: 0;
-    overflow: hidden;
-    margin: 0;
-    padding: 0 0 0 12px;
-    visibility: visible;
-    opacity: 1;
-    background: transparent;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-    backdrop-filter: none;
-    transition: max-height 0.3s ease;
-  }
-
-  .menu-item.submenu-open .sub-menu {
-    max-height: 500px;
-    padding-bottom: 10px;
-  }
-
-  .sub-menu-item {
-    padding: 8px 0;
-  }
-  /* =====================================
-   TABLET SEARCH DRAWER
-   ===================================== */
-
-  .search-container {
-    width: 100%;
-    height: auto;
-    min-height: 0;
-    padding: 20px 24px;
-    box-sizing: border-box;
-  }
-
-  .search-1 {
-    width: 100%;
-    padding: 0;
-  }
-
-  .search-2 {
-    width: 100%;
-    gap: 0;
-  }
-
-  .search-2 > .logo-link,
-  .search-2 > .cart-button,
-  .cart-counter-inner {
-    display: none;
-  }
-
-  .search-box {
-    width: 100%;
-    height: 52px;
-    border: 1px solid rgba(62, 41, 16, 0.2);
-    border-radius: 8px;
-  }
-
-  .input-search {
-    font-size: 16px;
-    padding: 0 16px;
-  }
-
-  .submit_button {
-    width: 52px;
-    background: #3e2910;
-    color: #fff;
-    border-left: none;
-  }
-
-  .popular-search {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 10px;
-    width: 100%;
-    margin-top: 18px;
-  }
-
-  .popular-search .popular-title {
-    width: 100%;
-    margin: 0 0 6px;
-    font-size: 14px;
-    color: #666;
-  }
-
-  .popular-link {
-    display: inline-flex;
-    align-items: center;
-    margin: 0;
-    padding: 8px 14px;
-    border-radius: 999px;
-    background: #f3ebe4;
-    font-size: 14px;
-  }
-
-  .popular-link::after {
-    display: none;
   }
 }
