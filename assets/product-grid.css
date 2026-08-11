@@ -6,7 +6,7 @@
 }
 .section-header {
   text-align: center;
-  position: relative;
+  margin-bottom: 30px;
 }
 .section-header h2 {
   color: #8b6b2e;
@@ -15,31 +15,31 @@
   font-size: 52px;
   font-weight: 700;
   font-family: "Jost", sans-serif;
+  line-height: 1.238;
+  position: relative;
 }
 
-.line {
+.section-header h2::after {
+  content: "";
   position: absolute;
   left: 50%;
-  top: 70px;
+  bottom: -14px;
   height: 3px;
-  background: #b58a39;
-  border-radius: 10px;
+  background: linear-gradient(90deg, #c8a86a, #8b6b2e);
+  border-radius: 3px;
   width: 40px;
   transform: translateX(-50%);
-  animation: pulseLine 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation: pulseLine 2s ease-in-out infinite alternate;
 }
 
 @keyframes pulseLine {
   0% {
     width: 40px;
+    opacity: 0.4;
   }
-
-  50% {
-    width: 120px;
-  }
-
   100% {
-    width: 40px;
+    width: 120px;
+    opacity: 1;
   }
 }
 .cards {
@@ -134,20 +134,18 @@
   }
   .section-header {
     text-align: center;
-    margin-bottom: 24px;
-  }
-
-  .section-header h2 {
-    font-size: 32px;
-    letter-spacing: 2px;
-    line-height: 1.2;
     margin-bottom: 15px;
   }
 
-  .line {
-    position: static;
-    transform: none;
-    margin: 0 auto;
+  .section-header h2 {
+    font-size: 28px;
+    letter-spacing: 2px;
+    line-height: 1.2;
+  }
+   .section-header h2::after {
+    bottom: -10px;
+    height: 2px;
+    width: 30px;
   }
 
   .cards {

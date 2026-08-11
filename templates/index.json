@@ -9,6 +9,58 @@
  */
 {
   "sections": {
+    "custom_slideshow_yFGW8x": {
+      "type": "custom-slideshow",
+      "blocks": {
+        "image_slide_itTqey": {
+          "type": "_image-slide",
+          "name": "Image Slide",
+          "settings": {
+            "image": "shopify://shop_images/Mens_Summer_Collection_2.webp",
+            "mobile_image": "shopify://shop_images/Mb4.webp"
+          },
+          "blocks": {}
+        },
+        "image_slide_QwfmRK": {
+          "type": "_image-slide",
+          "name": "Image Slide",
+          "settings": {
+            "image": "shopify://shop_images/Mens_Summer_Collection_25.webp",
+            "mobile_image": "shopify://shop_images/Mb.webp"
+          },
+          "blocks": {}
+        },
+        "image_slide_nePnLC": {
+          "type": "_image-slide",
+          "name": "Image Slide",
+          "settings": {
+            "image": "shopify://shop_images/bannner1.webp",
+            "mobile_image": "shopify://shop_images/Mb2.webp"
+          },
+          "blocks": {}
+        },
+        "image_slide_QKxzBr": {
+          "type": "_image-slide",
+          "name": "Image Slide",
+          "settings": {
+            "image": "shopify://shop_images/Banner_Arabian_Dates_1.webp",
+            "mobile_image": "shopify://shop_images/Mb3.webp"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "image_slide_itTqey",
+        "image_slide_QwfmRK",
+        "image_slide_nePnLC",
+        "image_slide_QKxzBr"
+      ],
+      "name": "SlideShow",
+      "settings": {
+        "autoplay": true,
+        "autoplay_speed": 5
+      }
+    },
     "product_banner": {
       "type": "custom-banner",
       "name": "Banner Image",
@@ -26,7 +78,6 @@
     },
     "product_grid_YaTrJU": {
       "type": "product-grid",
-      "disabled": true,
       "name": "Product Grid",
       "settings": {
         "heading": "ABE ZAM ZAM",
@@ -317,6 +368,7 @@
     }
   },
   "order": [
+    "custom_slideshow_yFGW8x",
     "product_banner",
     "product_grid_RtaYWH",
     "product_grid_YaTrJU",

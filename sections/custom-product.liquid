@@ -44,9 +44,11 @@
     </div>
     <div class="product-info-section">
       <h1 class="product-title">{{ product.title }}</h1>
-      <div class="product-rating">
-        <span class="rating-stars">★★★★★</span>
-        <span class="rating-text">4.8 (124 Reviews)</span>
+      <!-- Judge.me Star Rating -->
+      <div class="product-rating-wrapper">
+        <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}">
+          {{ product.metafields.judgeme.badge }}
+        </div>
       </div>
       <div class="price-section">
         <span class="sale-price">{{ product.selected_or_first_available_variant.price | money }}</span>
@@ -226,8 +228,7 @@ Can I get more discount on this product?
         "max": 50,
         "step": 1,
         "default": 5
-      },
-      {
+      }, {
         "type": "image_picker",
         "id": "banner_image",
         "label": "Banner Image",

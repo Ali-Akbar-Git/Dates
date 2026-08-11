@@ -4267,3 +4267,30 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
     font-size: 14px;
   }
 }
+/* Remove mobile tap highlight */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Remove button/link focus highlight */
+a,
+button,
+input,
+textarea,
+select,
+summary,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+/* Optional: Remove focus outline completely */
+a:focus,
+button:focus,
+input:focus,
+textarea:focus,
+select:focus,
+summary:focus {
+  outline: none;
+  box-shadow: none;
+}

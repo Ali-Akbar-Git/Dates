@@ -1,0 +1,35 @@
+<div class="item">
+    <details class="faqs-dropdown">
+    <summary>
+      <span>{{block.settings.question}}</span>
+      <span class="faqs-dropdown-arrow">{%render 'icon-dropdown' %}</span>
+    </summary>
+    <div class="faqs-answer">
+        {{block.settings.answer}}
+    </div>
+  </details>
+</div>
+{% schema %}
+{
+  "name": "FAQs-item",
+  "settings": [
+    {
+      "type": "text",
+      "id": "question",
+      "label": "Question",
+      "default": "That is Question?"
+    },
+    {
+      "type": "text",
+      "id": "answer",
+      "label": "Answer",
+      "default": "That is Answer."
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQs-item"
+    }
+  ]
+}
+{% endschema %}

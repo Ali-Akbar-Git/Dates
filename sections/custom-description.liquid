@@ -1,0 +1,17 @@
+{{ 'custom-description.css' | asset_url | stylesheet_tag }}
+<div class="custom-description">
+  <details class="product-description-dropdown">
+    <summary>
+      <span>Product Description</span>
+      <span class="dropdown-arrow">{%render 'icon-dropdown' %}</span>
+    </summary>
+    <div class="product-description-content">
+      {{ product.description }}
+    </div>
+  </details>
+</div>
+{% schema %}
+  {
+    "name": "Product Description"
+  }
+{% endschema %}

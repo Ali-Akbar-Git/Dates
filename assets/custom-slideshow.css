@@ -1,0 +1,49 @@
+.custom-slideshow {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.slides {
+  display: flex;
+  transition:
+    transform 0.5s ease,
+    height 0.5s ease;
+}
+.slides > * {
+  flex: 0 0 100%;
+  width: 100%;
+}
+
+.slide {
+  width: 100%;
+}
+
+.dots {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background: rgba(254, 250, 247, 0.65);
+  border: 1px solid rgba(62, 41, 16, 0.25);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.dot:hover {
+  background: #d6c29a;
+  border-color: #8b6b2e;
+  transform: scale(1.15);
+}
+.dot.active {
+  background: #8b6b2e;
+  border-color: #8b6b2e;
+  transform: scale(1.15);
+}

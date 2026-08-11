@@ -1,0 +1,42 @@
+{{ 'custom-slideshow.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-slideshow.js' | asset_url }}" defer></script>
+<div
+  class="custom-slideshow"
+  data-autoplay="{{ section.settings.autoplay }}"
+  data-speed="{{ section.settings.autoplay_speed }}">
+  <div class="slides">
+    {% content_for 'blocks' %}
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "SlideShow",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "autoplay",
+        "label": "Enable autoplay",
+        "default": true
+      }, {
+        "type": "range",
+        "id": "autoplay_speed",
+        "label": "Change slide every",
+        "min": 2,
+        "max": 10,
+        "step": 1,
+        "unit": "s",
+        "default": 5
+      }
+    ],
+    "blocks": [
+      {
+        "type": "_image-slide"
+      }
+    ],
+    "presets": [
+      {
+        "name": "SlideShow"
+      }
+    ]
+  }
+{% endschema %}

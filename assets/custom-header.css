@@ -100,7 +100,7 @@
 }
 .cart-counter {
   position: absolute;
-  right: 19px;
+  right: 20px;
   top: 34px;
   min-width: 20px;
   height: 20px;
@@ -119,7 +119,7 @@
 }
 .cart-counter-inner {
   position: absolute;
-  right: 64px;
+  right: 65px;
   top: 30px;
   min-width: 20px;
   height: 20px;
@@ -195,6 +195,7 @@
   margin: 0 auto;
   padding: 0 65px;
   max-width: 1550px;
+  height: 110px;
 }
 .search-2 {
   display: flex;
@@ -683,6 +684,7 @@
     width: 100%;
     height: 90px;
     padding: 8px 12px;
+    background-color: white;
   }
 
   .menu-open-button {

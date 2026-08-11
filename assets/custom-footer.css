@@ -92,6 +92,7 @@
   font-weight: 600;
   font-family: "Jost", sans-serif;
   color: #351e04;
+  margin-top: 10px;
 }
 .brand-info {
   color: #351f05;
@@ -109,7 +110,7 @@
 }
 .social-circle {
   font-family: "Jost", sans-serif;
-  color: #222;
+  color: #3e2910;
   background-color: #e9e9e9;
   font-weight: 500;
   font-size: 16px;
@@ -126,7 +127,7 @@
   height: 20px;
 }
 .social-circle:hover {
-  background-color: #222;
+  background-color: #3e2910;
   color: #fff;
   scale: 1.1;
 }

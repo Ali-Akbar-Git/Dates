@@ -1,0 +1,121 @@
+.custom-FAQs {
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 50px;
+}
+.custom-FAQs__content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+}
+.custom-FAQs__title {
+  width: 100%;
+  text-align: center;
+  color: #8b6b2e;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  font-size: 52px;
+  font-weight: 700;
+  font-family: Jost, sans-serif;
+  line-height: 1.238;
+}
+.faqs-dropdown {
+  border-radius: 10px;
+  background: #f3ebe4;
+  font-family: "Jost", sans-serif;
+  color: #3e2910;
+}
+.faqs-dropdown[open] summary {
+  background: #d6c29a;
+  border-radius: 10px;
+}
+.faqs-dropdown summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 18px;
+  list-style: none;
+  transition: all 0.3s ease;
+}
+.faqs-dropdown summary::-webkit-details-marker {
+  display: none;
+}
+
+.faqs-answer {
+  font-size: 16px;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  padding: 0 15px;
+  transition:
+    max-height 0.3s ease,
+    opacity 0.3s ease,
+    padding 0.3s ease;
+}
+.faqs-dropdown[open] .faqs-answer {
+  max-height: none;
+  opacity: 1;
+  padding: 15px 15px;
+}
+.faqs-dropdown-arrow {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.faqs-dropdown[open] .faqs-dropdown-arrow {
+  transform: rotate(180deg);
+}
+@media (max-width: 1023px) {
+  .custom-FAQs {
+    padding: 10px 30px;
+  }
+
+  .faqs-dropdown summary {
+    font-size: 20px;
+    padding: 14px;
+  }
+
+  .faqs-answer {
+    font-size: 15px;
+  }
+
+  .faqs-dropdown-arrow {
+    width: 18px;
+    height: 18px;
+  }
+}
+@media (max-width: 767px) {
+  .custom-FAQs {
+    padding: 10px 15px;
+  }
+  .custom-FAQs__title {
+    font-size: 28px;
+    letter-spacing: 2px;
+    line-height: 1.2;
+  }
+  .faqs-dropdown {
+    border-radius: 8px;
+  }
+
+  .faqs-dropdown summary {
+    font-size: 18px;
+    padding: 12px 15px;
+  }
+
+  .faqs-answer {
+    font-size: 14px;
+    padding: 12px 15px;
+    line-height: 1.6;
+  }
+
+  .faqs-dropdown-arrow {
+    width: 16px;
+    height: 16px;
+  }
+}

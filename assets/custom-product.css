@@ -29,7 +29,7 @@
 .product-section-wrapper {
   width: 100%;
   max-width: 1600px;
-  padding: 0 50px;
+  padding: 20px 50px;
   margin: 0 auto;
   display: flex;
   gap: 20px;
@@ -478,22 +478,20 @@
 .inner-image-navigation-button:active {
   transform: scale(0.96);
 }
-.product-rating {
+.product-rating-wrapper {
   display: flex;
   align-items: center;
-  gap: 8px;
   margin-bottom: 12px;
 }
 
-.rating-stars {
-  color: #f5b301;
-  font-size: 16px;
-  letter-spacing: 2px;
+.jdgm-preview-badge .jdgm-star {
+  color: #f5b301 !important;
 }
 
-.rating-text {
+.jdgm-prev-badge__text {
   color: #666;
   font-size: 14px;
+  font-family: "Jost", sans-serif;
 }
 .product-stock-status {
   display: flex;
@@ -502,6 +500,7 @@
   margin-bottom: 8px;
   color: #1f7a1f;
   font-weight: 500;
+  font-family: "Jost", sans-serif;
 }
 
 .stock-dot {
@@ -523,6 +522,7 @@
   color: #555;
   font-size: 14px;
   font-weight: 500;
+  font-family: "Jost", sans-serif;
 }
 .trust-badges {
   display: grid;
@@ -541,7 +541,7 @@
   color: #3e2910;
   font-size: 13px;
   font-weight: 500;
-
+  font-family: "Jost", sans-serif;
   box-shadow: 0 2px 8px rgba(62, 41, 16, 0.05);
   transition: all 0.2s ease;
 }
@@ -577,7 +577,7 @@
   .product-section-wrapper {
     width: 100%;
     max-width: 920px;
-    padding: 0 24px;
+    padding: 10 20px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -859,7 +859,7 @@
   }
 
   #fullMainProductImage.zoomed {
-    transform: scale(2.2);
+    transform: scale(2.5);
   }
 
   .inner-image-navigation-buttons {
@@ -901,13 +901,12 @@
   .product-section {
     display: block;
     width: 100%;
-    padding-bottom: calc(82px + env(safe-area-inset-bottom));
   }
 
   .product-section-wrapper {
     width: 100%;
     max-width: 100%;
-    padding: 0 16px;
+    padding: 10px 16px;
     margin: 0;
     display: flex;
     flex-direction: column;
@@ -1115,7 +1114,7 @@
   }
 
   #fullMainProductImage.zoomed {
-    transform: scale(2);
+    transform: scale(2.5);
   }
 
   .inner-image-navigation-buttons {

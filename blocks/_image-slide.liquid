@@ -1,0 +1,37 @@
+<div class="slide">
+{% if block.settings.image != blank %}
+  <picture>
+    {% if block.settings.mobile_image != blank %}
+      <source media="(max-width: 749px)" srcset="{{ block.settings.mobile_image | image_url: width: 1000 }}">
+    {% endif %}
+    {{
+      block.settings.image | image_url: width: 2000 | image_tag: loading: 'lazy'
+    }}
+  </picture>
+{% elsif block.settings.mobile_image != blank %}
+  {{
+    block.settings.mobile_image | image_url: width: 1000 | image_tag: loading: 'lazy'
+  }}
+{% endif %}
+</div>
+{% schema %}
+  {
+    "name": "Image Slide",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      }, {
+        "type": "image_picker",
+        "id": "mobile_image",
+        "label": "Mobile Image"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Image Slide"
+      }
+    ]
+  }
+{% endschema %}

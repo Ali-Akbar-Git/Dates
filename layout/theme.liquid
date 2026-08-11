@@ -31,7 +31,7 @@
     {% if request.design_mode %}
       {%- render 'theme-editor' -%}
     {% endif %}
-   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;400&display=swap" rel="stylesheet">
     {{ content_for_header }}
   </head>
 
@@ -114,25 +114,25 @@
           }
         })();
       </script>
-<style>
+      <style>
 
-body {
-  background-image: url('{{ settings.background | image_url }}');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(255, 255, 255, {{settings.background-opacity| divided_by: 100.0 }});
-  pointer-events: none;
-  z-index: -1;
-}
+        body {
+          background-image: url('{{ settings.background | image_url }}');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+        }
+        body::before {
+          content: "";
+          position: fixed;
+          inset: 0;
+          background: rgba(255, 255, 255, {{settings.background-opacity| divided_by: 100.0 }});
+          pointer-events: none;
+          z-index: -1;
+        }
 
-</style>
+      </style>
       <main
         id="MainContent"
         class="content-for-layout"

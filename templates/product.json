@@ -14,12 +14,90 @@
       "settings": {
         "variant_unit": "Weight",
         "whatsapp_number": "923420696209",
-        "low_stock_limit": 5,
-        "banner_image": "shopify://shop_images/ban2.png"
+        "low_stock_limit": 5
+      }
+    },
+    "description": {
+      "type": "custom-description",
+      "settings": {}
+    },
+    "product-recommendations": {
+      "type": "custom-recommendations",
+      "settings": {
+        "heading": "YOU MAY ALSO LIKE",
+        "limit": 4
+      }
+    },
+    "product-reviews": {
+      "type": "product-reviews",
+      "settings": {}
+    },
+    "FAQs": {
+      "type": "custom-FAQs",
+      "blocks": {
+        "faqs_item_Pe7rXp": {
+          "type": "_faqs-item",
+          "name": "FAQs-item",
+          "settings": {
+            "question": "Do you offer nationwide delivery?",
+            "answer": "Yes, we deliver fresh premium dates across Pakistan."
+          },
+          "blocks": {}
+        },
+        "faqs_item_UreWEJ": {
+          "type": "_faqs-item",
+          "name": "FAQs-item",
+          "settings": {
+            "question": "Are your dates imported?",
+            "answer": "We offer both imported Arabic dates and premium local varieties sourced from trusted suppliers."
+          },
+          "blocks": {}
+        },
+        "fa_qs_item_tUddCG": {
+          "type": "_faqs-item",
+          "name": "FAQs-item",
+          "settings": {
+            "question": "Which date variety should I choose?",
+            "answer": "If you're unsure, contact us and we'll recommend the best variety based on your taste, budget, and needs."
+          },
+          "blocks": {}
+        },
+        "fa_qs_item_6XzBAU": {
+          "type": "_faqs-item",
+          "name": "FAQs-item",
+          "settings": {
+            "question": "Can I place a bulk order?",
+            "answer": "Absolutely. We offer bulk and wholesale orders for businesses, events, and gifting."
+          },
+          "blocks": {}
+        },
+        "fa_qs_item_wf9Riq": {
+          "type": "_faqs-item",
+          "name": "FAQs-item",
+          "settings": {
+            "question": "Do you offer gift packaging?",
+            "answer": "Yes, gift packaging options are available for Ramadan, Eid, and special occasions."
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "faqs_item_Pe7rXp",
+        "faqs_item_UreWEJ",
+        "fa_qs_item_tUddCG",
+        "fa_qs_item_6XzBAU",
+        "fa_qs_item_wf9Riq"
+      ],
+      "settings": {
+        "heading": "Frequently Asked Questions"
       }
     }
   },
   "order": [
-    "main"
+    "main",
+    "description",
+    "product-recommendations",
+    "product-reviews",
+    "FAQs"
   ]
 }

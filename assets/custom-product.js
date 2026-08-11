@@ -115,7 +115,10 @@ addToCartButton?.addEventListener("click", async () => {
   }
 
   const originalText = buttonText.textContent;
-
+  const cartBefore = await fetch("/cart.js").then((r) => r.json());
+  const quantityBefore =
+    cartBefore.items.find((item) => item.variant_id === variantId)?.quantity ||
+    0;
   try {
     addToCartButton.disabled = true;
     buttonText.textContent = "Adding...";
@@ -143,13 +146,19 @@ addToCartButton?.addEventListener("click", async () => {
     const result = await response.json();
 
     if (!response.ok) {
+      const cartAfter = await fetch("/cart.js").then((r) => r.json());
+      const quantityAfter =
+        cartAfter.items.find((item) => item.variant_id === variantId)
+          ?.quantity || 0;
+      if (quantityAfter > quantityBefore) {
+        document.dispatchEvent(new CustomEvent("Added-to-cart"));
+      }
       throw new Error(
         result.description ||
           result.message ||
           "Unable to add product to cart.",
       );
     }
-
     document.dispatchEvent(
       new CustomEvent("Added-to-cart", {
         detail: {
@@ -170,7 +179,7 @@ addToCartButton?.addEventListener("click", async () => {
       errorBox.textContent = error.message;
       setTimeout(() => {
         errorBox.textContent = "";
-      }, 10000);
+      }, 5000);
     }
     buttonText.textContent = originalText;
   } finally {

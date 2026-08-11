@@ -1,0 +1,103 @@
+.custom-description {
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 10px 50px;
+}
+.product-description-dropdown {
+  border-radius: 10px;
+  background: #f3ebe4;
+  font-family: "Jost", sans-serif;
+  color: #3e2910;
+}
+.product-description-dropdown[open] summary{
+  background: #d6c29a;
+  border-radius: 10px;
+}
+.product-description-dropdown summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 22px;
+  list-style: none;
+  transition: all 0.3s ease;
+}
+
+.product-description-dropdown summary::-webkit-details-marker {
+  display: none;
+}
+
+.product-description-content {
+  font-size: 16px;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  padding: 0 15px;
+  transition:
+    max-height 0.3s ease,
+    opacity 0.3s ease,
+    padding 0.3s ease;
+}
+.product-description-dropdown[open] .product-description-content {
+  max-height: none;
+  opacity: 1;
+  padding: 15px 15px;
+}
+.dropdown-arrow {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.product-description-dropdown[open] .dropdown-arrow {
+  transform: rotate(180deg);
+}
+@media (max-width: 1023px) {
+  .custom-description {
+    padding: 10px 30px;
+  }
+
+  .product-description-dropdown summary {
+    font-size: 20px;
+    padding: 14px;
+  }
+
+  .product-description-content {
+    font-size: 15px;
+  }
+
+  .dropdown-arrow {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .custom-description {
+    padding: 10px 15px;
+  }
+
+  .product-description-dropdown {
+    border-radius: 8px;
+  }
+
+  .product-description-dropdown summary {
+    font-size: 18px;
+    padding: 12px 15px;
+  }
+
+  .product-description-content {
+    font-size: 14px;
+    padding: 0 15px 12px;
+    line-height: 1.6;
+  }
+
+  .dropdown-arrow {
+    width: 16px;
+    height: 16px;
+  }
+}
