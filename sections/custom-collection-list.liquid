@@ -1,0 +1,74 @@
+{{ 'product-grid.css' | asset_url | stylesheet_tag }}
+<script src="{{'product-grid.js'| asset_url}}" defer></script>
+
+<div class="custom-collection">
+  <div class="section-header">
+    <h2>{{ section.settings.heading }}</h2>
+  </div>
+
+  <div class="cards">
+    {% for collection in collections %}
+      {% unless collection.handle == 'frontpage' %}
+
+        <div class="grid-card">
+
+          <a href="{{ collection.url }}" class="product-image-link">
+            {% if collection.image %}
+              <img
+                src="{{ collection.image | image_url: width: 600 }}"
+                alt="{{ collection.title | escape }}"
+                width="{{ collection.image.width }}"
+                height="{{ collection.image.height }}"
+                loading="lazy"
+              >
+            {% elsif collection.products.first.featured_image %}
+              <img
+                src="{{ collection.products.first.featured_image | image_url: width: 600 }}"
+                alt="{{ collection.title | escape }}"
+                width="{{ collection.products.first.featured_image.width }}"
+                height="{{ collection.products.first.featured_image.height }}"
+                loading="lazy"
+              >
+            {% endif %}
+          </a>
+
+          <div class="product-title">
+            {{ collection.title }}
+          </div>
+
+          <div class="pieces">
+            {{ collection.products_count }}
+            {% if collection.products_count == 1 %}
+              item
+            {% else %}
+              items
+            {% endif %}
+          </div>
+
+          <a
+            href="{{ collection.url }}"
+            class="card-button"
+          >
+            Shop Collection
+          </a>
+
+        </div>
+
+      {% endunless %}
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection List",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Collections"
+    }
+  ]
+}
+{% endschema %}

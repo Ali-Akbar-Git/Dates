@@ -1,0 +1,20 @@
+{{ 'custom-header.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-header.js' | asset_url }}" defer></script>
+
+<div class="cart-page-custom">
+  <div class="cart-container cart-page-container">
+    <h3 class="cart-title">Shopping Cart</h3>
+
+    <div class="cart-page-wrapper loading"></div>
+  </div>
+</div>
+{% schema  %} 
+    {
+    "name": "Cart Section",
+    "presets": [
+      {
+        "name": "Cart Section"
+      }
+    ]
+  } 
+{% endschema %}

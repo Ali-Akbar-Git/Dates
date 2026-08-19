@@ -73,7 +73,7 @@
       "name": "Product Grid",
       "settings": {
         "heading": "MADINA DATES",
-        "collection": "col1"
+        "collection": "madina-dates"
       }
     },
     "product_grid_YaTrJU": {
@@ -81,7 +81,7 @@
       "name": "Product Grid",
       "settings": {
         "heading": "ABE ZAM ZAM",
-        "collection": "col2"
+        "collection": "abe-zam-zam"
       }
     },
     "testimonial_bar_VidKEk": {

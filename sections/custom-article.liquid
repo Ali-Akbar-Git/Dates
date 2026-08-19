@@ -1,0 +1,50 @@
+{{ 'custom-page.css' | asset_url | stylesheet_tag }}
+
+<div class="page-section">
+  <div class="page_content article_content">
+
+    {% if section.settings.show_date %}
+      <div class="blog_post_date">
+        {{ article.published_at | date: "%B %d, %Y" }}
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_image and article.image %}
+      <div class="blog_post_image">
+        {{
+          article.image
+          | image_url: width: 1600
+          | image_tag: loading: 'eager', alt: article.title
+        }}
+      </div>
+    {% endif %}
+
+    {{ article.content }}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Article content",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show featured image",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show published date",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Article content"
+    }
+  ]
+}
+{% endschema %}

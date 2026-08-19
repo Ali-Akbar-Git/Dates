@@ -8,21 +8,35 @@
   <div class="product-title">
     {{ product.title }}
   </div>
-  <div class="pieces">
-    {{ product.metafields.custom.pieces.value }}
-  </div>
   <div class="arabic-title">
     {{ product.metafields.custom.arabic.value }}
   </div>
+  {% if product.metafields.custom.pieces.value != blank %}
+    <div class="pieces">
+      {{ product.metafields.custom.pieces.value }}
+    </div>
+  {% endif %}
   <div class="starting-price">
     <span>Starting at
     </span>
     {{ product.price_min | money_without_trailing_zeros }}</div>
-  <div class="product-description">
+  <div class="product-availability">
     {{ product.metafields.custom.availability.value }}
   </div>
-  <a href="{{ product.url }}" class="card-button">
-    View Details
-  </a>
+  {% assign min_price_variant = product.variants | sort: 'price' | first %}
+
+  <button
+    type="button"
+    class="card-button card-add-to-cart"
+    data-variant-id="{{ min_price_variant.id }}"
+    {% unless min_price_variant.available %}
+    disabled
+    {% endunless %}>
+    {% if min_price_variant.available %}
+      Add to cart
+    {% else %}
+      Sold out
+    {% endif %}
+  </button>
 
 </div>

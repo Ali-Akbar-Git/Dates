@@ -14,7 +14,7 @@
     "logo_height_mobile": 28,
     "favicon": "shopify://shop_images/Favicon.png",
     "background": "shopify://shop_images/background.webp",
-    "page_text_color": "{{ settings.color_palette.foreground }}",
+    "page_text_color": "#3E2910",
     "type_body_font": "inter_n4",
     "type_subheading_font": "inter_n5",
     "type_heading_font": "inter_n7",
@@ -105,6 +105,14 @@
     "variant_button_border_width": 1,
     "variant_button_radius": 14,
     "variant_button_width": "equal-width-buttons",
+    "sections": {
+      "password-footer": {
+        "type": "password-footer",
+        "settings": {
+          "background_color": ""
+        }
+      }
+    },
     "content_for_index": [],
     "blocks": {
       "14060646107696862457": {

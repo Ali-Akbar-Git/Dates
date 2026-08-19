@@ -1,0 +1,92 @@
+{{ 'custom-page.css' | asset_url | stylesheet_tag }}
+
+<div class="page-section">
+  {% if section.settings.show_title %}
+    <h1 class="page_title">{{ blog.title }}</h1>
+  {% endif %}
+
+  <div class="page_content">
+    {% for article in blog.articles %}
+      <article class="blog_post">
+        <h2 class="blog_post_title">
+          <a href="{{ article.url }}">{{ article.title }}</a>
+        </h2>
+
+        {% if section.settings.show_date %}
+          <div class="blog_post_date">
+            {{ article.published_at | date: "%B %d, %Y" }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.show_image and article.image %}
+          <div class="blog_post_image">
+            <a href="{{ article.url }}">
+              {{
+                article.image
+                | image_url: width: 1200
+                | image_tag: loading: 'lazy', alt: article.title
+              }}
+            </a>
+          </div>
+        {% endif %}
+
+        <div class="blog_post_content">
+          {% if article.excerpt != blank %}
+            {{ article.excerpt }}
+          {% else %}
+            {{ article.content | strip_html | truncatewords: 40 }}
+          {% endif %}
+        </div>
+
+        {% if section.settings.show_read_more %}
+          <a class="blog_post_link" href="{{ article.url }}">
+            {{ section.settings.read_more_text }}
+          </a>
+        {% endif %}
+      </article>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog posts",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show blog title",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show featured image",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show published date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_read_more",
+      "label": "Show read more link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "read_more_text",
+      "label": "Read more text",
+      "default": "Read more"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog posts"
+    }
+  ]
+}
+{% endschema %}

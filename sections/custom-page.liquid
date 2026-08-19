@@ -1,0 +1,27 @@
+{{ 'custom-page.css' | asset_url | stylesheet_tag }}
+<div class="page-section">
+  {% if section.settings.show_title %}
+    <h1 class="page_title">{{ page.title }}</h1>
+  {% endif %}
+  <div class="page_content">
+    {{ page.content }}
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Page content",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_title",
+        "label": "Show page title",
+        "default": true
+      }
+    ],
+    "presets": [
+      {
+        "name": "Page content"
+      }
+    ]
+  }
+{% endschema %}

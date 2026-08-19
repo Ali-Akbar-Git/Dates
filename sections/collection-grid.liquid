@@ -1,0 +1,76 @@
+{{ 'product-grid.css' | asset_url | stylesheet_tag }}
+{{ 'custom-search.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'collection-grid.js' | asset_url }}" defer></script>
+<script src="{{'product-grid.js'| asset_url}}" defer></script>
+<div class="custom-collection">
+  <div class="section-header">
+    <h2>{{ collection.title }}</h2>
+  </div>
+  {% if collection.products_count > 0 %}
+    <div class="search-toolbar">
+      <div class="search-toolbar-left">
+        <span>
+          {{ collection.products_count }} products
+        </span>
+      </div>
+      <div class="search-toolbar-right">
+        <label for="CollectionSortBy">
+          Sort by:
+        </label>
+        <div class="search-sort-wrapper">
+          <select
+            id="CollectionSortBy"
+            class="search-sort"
+            aria-label="Sort collection">
+            {% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
+            {% for option in collection.sort_options %}
+              <option
+                value="{{ option.value }}"
+                {% if option.value == sort_by %}
+                selected
+                {% endif %}>
+                {{ option.name }}
+              </option>
+            {% endfor %}
+          </select>
+          <span class="search-sort-arrow">
+            {% render 'icon-dropdown' %}
+          </span>
+        </div>
+      </div>
+    </div>
+    {% paginate collection.products by 12 %}
+      <div class="cards">
+        {% for product in collection.products %}
+          {% render 'grid-card'
+            , product: product %}
+        {% endfor %}
+      </div>
+      <div class="pagination">
+        {{ paginate | default_pagination }}
+      </div>
+    {% endpaginate %}
+  {% else %}
+
+    <!-- EMPTY COLLECTION -->
+    <div class="collection-empty">
+      <h3>No products available yet</h3>
+
+      <p>
+        We’re adding new products to this collection. 
+        Please check back soon.
+      </p>
+
+      <a href="{{ routes.all_products_collection_url }}" class="collection-empty-button">
+        Explore All Products
+      </a>
+    </div>
+
+  {% endif %}
+</div>
+{% schema %}
+  {
+    "name": "Collection Grid",
+    "settings": []
+  }
+{% endschema %}

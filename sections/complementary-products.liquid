@@ -1,0 +1,53 @@
+{{ 'product-grid.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-recommendations.js' | asset_url }}" defer></script>
+{% unless request.page_type == 'search' and search.results_count != 0 or request.page_type == 'collection' and collection.products_count != 0
+%}
+  {% assign demo_product = section.settings.demo_product %}
+  {% if demo_product != blank %}
+    <div class="product-recommendations" data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ demo_product.id }}&limit={{ section.settings.limit }}&intent=complementary">
+      {% if recommendations.performed? and recommendations.products_count > 0 %}
+        <div class="custom-product-grid">
+          <div class="section-header">
+            <h2>{{ section.settings.heading }}</h2>
+          </div>
+          <div class="cards">
+            {% for recommended_product in recommendations.products %}
+              {% render 'grid-card'
+                , product: recommended_product
+              %}
+            {% endfor %}
+          </div>
+
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endunless %}
+{% schema %}
+  {
+    "name": "Complementary Products",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "YOU MAY ALSO LIKE"
+      }, {
+        "type": "product",
+        "id": "demo_product",
+        "label": "Demo product",
+        "info": "Complementary recommendations will be based on this product."
+      }, {
+        "type": "number",
+        "id": "limit",
+        "label": "Product Limit",
+        "default": 4
+      }
+    ],
+    "presets": [
+      {
+        "name": "Complementary Products"
+      }
+    ]
+  }
+{% endschema %}

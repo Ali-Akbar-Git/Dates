@@ -1,0 +1,104 @@
+{{ 'custom-search.css' | asset_url | stylesheet_tag }}
+{{ 'product-grid.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-search.js' | asset_url }}" defer></script>
+<script src="{{'product-grid.js'| asset_url}}" defer></script>
+<div class="custom-search">
+  <div class="search-header">
+    {% if search.performed %}
+      <h1 class="search-title">
+        Found {{ search.results_count }} results for "{{ search.terms }}"
+      </h1>
+    {% endif %}
+    <form
+      action="{{ routes.search_url }}"
+      method="get"
+      role="search"
+      class="page-search-box">
+      <input
+        type="search"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="Search products"
+        class="input-search"
+        aria-label="Search products"
+        autocomplete="off">
+      <input
+        type="hidden"
+        name="type"
+        value="product">
+      <button
+        type="submit"
+        class="submit_button"
+        aria-label="Search">
+        {% render 'icon-search' %}
+      </button>
+    </form>
+  </div>
+  {% if search.performed and search.results_count > 0 %}
+    <div class="search-toolbar">
+
+      <div class="search-toolbar-left">
+        <span>
+          {{ search.results_count }} products
+        </span>
+      </div>
+
+      <div class="search-toolbar-right">
+        <label for="SortBy">Sort by:</label>
+
+        <div class="search-sort-wrapper">
+
+          <select
+            id="SortBy"
+            class="search-sort"
+            aria-label="Sort search results">
+
+            <option
+              value="relevance"
+              {% if search.sort_by == 'relevance' %}
+              selected{% endif %}>
+              Relevance
+            </option>
+
+            <option
+              value="price-ascending"
+              {% if search.sort_by == 'price-ascending' %}
+              selected{% endif %}>
+              Price, low to high
+            </option>
+
+            <option
+              value="price-descending"
+              {% if search.sort_by == 'price-descending' %}
+              selected{% endif %}>
+              Price, high to low
+            </option>
+          </select>
+          <span class="search-sort-arrow">
+            {% render 'icon-dropdown' %}
+          </span>
+        </div>
+      </div>
+
+    </div>
+    {% paginate search.results by 12 %}
+      <div class="cards">
+        {% for item in search.results %}
+          {% render 'grid-card'
+            , product: item %}
+        {% endfor %}
+      </div>
+      <div class="pagination">
+        {{ paginate | default_pagination }}
+      </div>
+    {% endpaginate %}
+  {% else %}
+    <p class="not-found">Check the spelling or try a different search term.</p>
+  {% endif %}
+</div>
+{% schema %}
+  {
+    "name": "Search Page",
+    "settings": []
+  }
+{% endschema %}

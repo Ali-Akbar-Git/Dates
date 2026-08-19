@@ -31,9 +31,14 @@ document.querySelectorAll(".custom-slideshow").forEach((slideshow) => {
     dots[current].classList.add("active");
   }
   function nextSlide() {
-    current = (current + 1) % images.length;
-    showSlide();
-  }
+  current = (current + 1) % images.length;
+  showSlide();
+}
+
+function previousSlide() {
+  current = (current - 1 + images.length) % images.length;
+  showSlide();
+}
   function startAutoplay() {
     if (!autoplayEnabled) return;
     clearInterval(autoplay);
@@ -45,4 +50,33 @@ document.querySelectorAll(".custom-slideshow").forEach((slideshow) => {
   if (autoplayEnabled) startAutoplay();
   slideshow.addEventListener("mouseenter", stopAutoplay);
   slideshow.addEventListener("mouseleave", startAutoplay);
+  let touchStartX = 0;
+let touchStartY = 0;
+
+slides.addEventListener("touchstart", (event) => {
+  touchStartX = event.touches[0].clientX;
+  touchStartY = event.touches[0].clientY;
+  stopAutoplay();
+}, { passive: true });
+
+slides.addEventListener("touchend", (event) => {
+  const touchEndX = event.changedTouches[0].clientX;
+  const touchEndY = event.changedTouches[0].clientY;
+
+  const distanceX = touchEndX - touchStartX;
+  const distanceY = touchEndY - touchStartY;
+
+  if (
+    Math.abs(distanceX) > 50 &&
+    Math.abs(distanceX) > Math.abs(distanceY)
+  ) {
+    if (distanceX < 0) {
+      nextSlide();
+    } else {
+      previousSlide();
+    }
+  }
+
+  startAutoplay();
+}, { passive: true });
 });

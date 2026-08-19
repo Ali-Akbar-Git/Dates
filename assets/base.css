@@ -391,7 +391,7 @@ p:empty {
   position: absolute;
   inset: 0;
   z-index: var(--layer-section-background);
-  background-color: var(--color-background);
+  background-color: transparent;
 }
 
 /* For page-width sections, all content goes in the center column */
@@ -536,10 +536,9 @@ p:empty {
   .grid {
     display: grid;
     gap: 0;
-    grid-template-columns: var(--margin-4xl) repeat(
-        var(--centered-column-number),
-        minmax(0, 1fr)
-      ) var(--margin-4xl);
+    grid-template-columns:
+      var(--margin-4xl) repeat(var(--centered-column-number), minmax(0, 1fr))
+      var(--margin-4xl);
     grid-template-areas: "column-0 column-1 column-2 column-3 column-4 column-5 column-6 column-7 column-8 column-9 column-10 column-11 column-12 column-13";
   }
 }
@@ -1306,6 +1305,7 @@ button.shopify-payment-button__button--unbranded {
     --button-focus-outline-color,
     var(--button-background-color)
   );
+  background: #3e2910;
 }
 
 .button-secondary {
@@ -3398,10 +3398,9 @@ fly-to-cart.fly-to-cart--sticky {
   ):has(.collection-wrapper--full-width) {
   @media screen and (min-width: 750px) {
     grid-column: 1 / -1;
-    grid-template-columns: 0fr repeat(
-        var(--centered-column-number),
-        minmax(0, 1fr)
-      ) 0fr;
+    grid-template-columns:
+      0fr repeat(var(--centered-column-number), minmax(0, 1fr))
+      0fr;
   }
 }
 
@@ -4253,6 +4252,7 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
   text-align: center;
   white-space: nowrap;
   margin: 0;
+  color: #fff;
 }
 @media screen and (max-width: 749px) {
   #header-group .announcement-bar__slider {
@@ -4294,3 +4294,4 @@ summary:focus {
   outline: none;
   box-shadow: none;
 }
+

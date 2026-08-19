@@ -163,6 +163,7 @@ addToCartButton?.addEventListener("click", async () => {
       new CustomEvent("Added-to-cart", {
         detail: {
           item: result,
+          openDrawer: true
         },
       }),
     );
