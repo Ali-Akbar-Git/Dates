@@ -70,6 +70,18 @@
   margin: 0 auto;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
 }
+@media (min-width: 1024px) {
+  /* Last row has 1 card */
+  .grid-card:nth-last-child(1):nth-child(4n + 1) {
+    grid-column: 2 / span 2;
+    justify-self: center;
+  }
+
+  /* Last row has 2 cards */
+  .grid-card:nth-last-child(2):nth-child(4n + 1) {
+    grid-column-start: 2;
+  }
+}
 
 .grid-card img {
   width: 305px;
@@ -92,7 +104,7 @@
   font-weight: 400;
 }
 .arabic-title {
-  font-family: Georgia, serif;
+  font-family: "Noto Sans Arabic", serif;
   color: #7b6a4a;
   font-size: 18px;
 }
@@ -227,6 +239,11 @@
     padding: 10px;
     border-radius: 16px;
   }
+  .grid-card:nth-last-child(1):nth-child(2n + 1) {
+    grid-column: 1 / -1;
+    width: calc(50% - 6px);
+    justify-self: center;
+  }
 
   .grid-card img {
     width: 100%;
@@ -298,5 +315,15 @@
     height: auto;
     aspect-ratio: 1 / 1;
     object-fit: cover;
+  }
+  /* Last row has 1 card */
+  .grid-card:nth-last-child(1):nth-child(3n + 1) {
+    grid-column: 2;
+  }
+
+  /* Last row has 2 cards */
+  .grid-card:nth-last-child(2):nth-child(3n + 1),
+  .grid-card:nth-last-child(1):nth-child(3n + 2) {
+    transform: translateX(50%);
   }
 }

@@ -61,19 +61,19 @@
         "autoplay_speed": 5
       }
     },
+    "product_banner": {
+      "type": "custom-banner",
+      "name": "Banner Image",
+      "settings": {
+        "banner_image": "shopify://shop_images/banner.png"
+      }
+    },
     "product_grid_RtaYWH": {
       "type": "product-grid",
       "name": "Product Grid",
       "settings": {
         "heading": "MADINA DATES",
         "collection": "madina-dates"
-      }
-    },
-    "product_banner": {
-      "type": "custom-banner",
-      "name": "Banner Image",
-      "settings": {
-        "banner_image": "shopify://shop_images/banner.png"
       }
     },
     "product_grid_YaTrJU": {
@@ -447,8 +447,8 @@
   },
   "order": [
     "custom_slideshow_yFGW8x",
-    "product_grid_RtaYWH",
     "product_banner",
+    "product_grid_RtaYWH",
     "product_grid_YaTrJU",
     "features_aTGP3n",
     "video_slider_iDiCP7",
