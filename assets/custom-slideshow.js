@@ -9,7 +9,7 @@ document.querySelectorAll(".custom-slideshow").forEach((slideshow) => {
   const dotsContainer = document.createElement("div");
   dotsContainer.classList.add("dots");
   slideshow.appendChild(dotsContainer);
-  images.forEach((image,index) => {
+  images.forEach((image, index) => {
     const dot = document.createElement("span");
     dot.classList.add("dot");
     if (index === 0) {
@@ -23,7 +23,8 @@ document.querySelectorAll(".custom-slideshow").forEach((slideshow) => {
   });
   const dots = slideshow.querySelectorAll(".dot");
   function showSlide() {
-    slides.style.transform = `translateX(-${current * 100}%)`;
+    const slideWidth = slideshow.offsetWidth;
+    slides.style.transform = `translateX(-${current * slideWidth}px)`;
     slides.style.height = `${images[current].offsetHeight}px`;
     dots.forEach((dot) => {
       dot.classList.remove("active");
@@ -31,14 +32,14 @@ document.querySelectorAll(".custom-slideshow").forEach((slideshow) => {
     dots[current].classList.add("active");
   }
   function nextSlide() {
-  current = (current + 1) % images.length;
-  showSlide();
-}
+    current = (current + 1) % images.length;
+    showSlide();
+  }
 
-function previousSlide() {
-  current = (current - 1 + images.length) % images.length;
-  showSlide();
-}
+  function previousSlide() {
+    current = (current - 1 + images.length) % images.length;
+    showSlide();
+  }
   function startAutoplay() {
     if (!autoplayEnabled) return;
     clearInterval(autoplay);
@@ -51,32 +52,76 @@ function previousSlide() {
   slideshow.addEventListener("mouseenter", stopAutoplay);
   slideshow.addEventListener("mouseleave", startAutoplay);
   let touchStartX = 0;
-let touchStartY = 0;
+  let touchStartY = 0;
+  let touchCurrentX = 0;
+  let isDragging = false;
 
-slides.addEventListener("touchstart", (event) => {
-  touchStartX = event.touches[0].clientX;
-  touchStartY = event.touches[0].clientY;
-  stopAutoplay();
-}, { passive: true });
+  slides.addEventListener(
+    "touchstart",
+    (event) => {
+      touchStartX = event.touches[0].clientX;
+      touchStartY = event.touches[0].clientY;
+      touchCurrentX = touchStartX;
+      isDragging = true;
 
-slides.addEventListener("touchend", (event) => {
-  const touchEndX = event.changedTouches[0].clientX;
-  const touchEndY = event.changedTouches[0].clientY;
+      stopAutoplay();
 
-  const distanceX = touchEndX - touchStartX;
-  const distanceY = touchEndY - touchStartY;
+      // Turn animation off while finger is moving
+      slides.style.transition = "none";
+    },
+    { passive: true },
+  );
 
-  if (
-    Math.abs(distanceX) > 50 &&
-    Math.abs(distanceX) > Math.abs(distanceY)
-  ) {
-    if (distanceX < 0) {
-      nextSlide();
-    } else {
-      previousSlide();
-    }
-  }
+  slides.addEventListener(
+    "touchmove",
+    (event) => {
+      if (!isDragging) return;
 
-  startAutoplay();
-}, { passive: true });
+      touchCurrentX = event.touches[0].clientX;
+      const touchCurrentY = event.touches[0].clientY;
+
+      const distanceX = touchCurrentX - touchStartX;
+      const distanceY = touchCurrentY - touchStartY;
+
+      // Don't interfere with vertical page scrolling
+      if (Math.abs(distanceY) > Math.abs(distanceX)) return;
+
+      const slideWidth = slideshow.offsetWidth;
+      const currentPosition = -(current * slideWidth);
+
+      // Move slider WITH finger
+      slides.style.transform = `translateX(${currentPosition + distanceX}px)`;
+    },
+    { passive: true },
+  );
+
+  slides.addEventListener(
+    "touchend",
+    () => {
+      if (!isDragging) return;
+
+      isDragging = false;
+
+      const distanceX = touchCurrentX - touchStartX;
+      const slideWidth = slideshow.offsetWidth;
+
+      // Turn smooth animation back on
+      slides.style.transition = "transform 0.3s ease, height 0.5s ease";
+
+      // Finger moved more than 20% of screen
+      const threshold = slideWidth * 0.2;
+
+      if (distanceX < -threshold) {
+        nextSlide();
+      } else if (distanceX > threshold) {
+        previousSlide();
+      } else {
+        // Not enough swipe → return to current slide
+        showSlide();
+      }
+
+      startAutoplay();
+    },
+    { passive: true },
+  );
 });

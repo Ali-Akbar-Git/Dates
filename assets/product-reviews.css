@@ -38,7 +38,7 @@
 .jm-histogram-row[data-v-e2d12ff0]:hover .jm-progress-bar {
   background: #d6c29a;
 }
-.jm-pagination-controls__button--page[data-v-3e706ccf]:not(
+.jm-pagination-controls__button--page[data-v-9640c170]:not(
     .jm-pagination-controls__button--active
   ),
 .jm-filter-panel__clear-btn[data-v-ae01a3a1],
@@ -112,13 +112,13 @@ p[class="jm-text"],
   border-color: #8b6b2e;
   color: #fff;
 }
-.jm-pagination-controls__button--page[data-v-3e706ccf]:hover:not(
+.jm-pagination-controls__button--page[data-v-9640c170]:hover:not(
     .jm-pagination-controls__button--active
   ) {
-  background: #f3ebe4;
+  background: #d6c29a;
   box-shadow: none;
 }
-.jm-pagination-controls__button.jm-pagination-controls__button--nav[data-v-3e706ccf]:hover {
+.jm-pagination-controls__button.jm-pagination-controls__button--nav[data-v-9640c170]:hover {
   background: #d6c29a;
 }
 .jdgm-write-review-modal {

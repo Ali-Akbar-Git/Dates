@@ -1,0 +1,379 @@
+<style>
+  .influencer-carousel-wrapper {
+    position: relative;
+    padding: 20px 16px;
+  }
+  .influencer-carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    padding-bottom: 12px;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    cursor: grab;
+    margin-top: 20px;
+  }
+  .influencer-carousel:active {
+    cursor: grabbing;
+  }
+  .influencer-carousel::-webkit-scrollbar {
+    display: none;
+  }
+  .influencer-video {
+    flex: 0 0 auto;
+    width: calc(90% / var(--slides-desktop, 4) - 16px);
+    scroll-snap-align: start;
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: #f0f0f0;
+  }
+  @media screen and (max-width: 750px) {
+    .influencer-carousel-wrapper {
+      padding: 20px 0;
+    }
+    .influencer-carousel {
+      padding-left: 16px;
+      padding-right: 16px;
+      scroll-padding-left: 16px;
+      scroll-padding-right: 16px;
+      justify-content: flex-start;
+    }
+    .influencer-video {
+      width: calc(100% - 32px);
+      scroll-snap-align: center;
+    }
+  }
+  .influencer-meta {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 14px;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .sound-button {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .sound-button:hover {
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+  }
+  .sound-button svg {
+    width: 20px;
+    height: 20px;
+  }
+  .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.3);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 4;
+    color: white;
+  }
+  .arrow-left {
+    left: 16px;
+  }
+  .arrow-right {
+    right: 16px;
+  }
+
+</style>
+<div class="influencer-carousel-wrapper" style="--slides-desktop: {{ section.settings.slides_desktop }};">
+  {% if section.settings.carousel_heading != blank %}
+    <div class="influencer-carousel-heading">{{ section.settings.carousel_heading }}</div>
+  {% endif %}
+
+  <button class="arrow arrow-left" onclick="scrollCarousel('left')">&#8249;</button>
+  <button class="arrow arrow-right" onclick="scrollCarousel('right')">&#8250;</button>
+
+  <div class="influencer-carousel" id="autoCarousel">
+    {% for block in section.blocks %}
+      {% assign video = block.settings.video %}
+      {% assign link = block.settings.linked_product.url | default: block.settings.linked_collection.url %}
+
+      <div class="influencer-video">
+        <div style="position:relative; cursor: pointer;" onclick="handleVideoClick(event, '{{ link }}', {{ forloop.index }})">
+          {% if video != blank %}
+            {% assign video_id = 'video-' | append: forloop.index %}
+
+            {{
+              video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'auto', id: video_id, style: 'width:100%;height:auto;display:block;z-index:1;'
+            }}
+            <div class="sound-button" onclick="event.stopPropagation(); toggleMute({{ forloop.index }})">
+              <svg
+                id="icon-{{ forloop.index }}"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                <line
+                  x1="23"
+                  y1="9"
+                  x2="17"
+                  y2="15"></line>
+                <line
+                  x1="17"
+                  y1="9"
+                  x2="23"
+                  y2="15"></line>
+              </svg>
+            </div>
+          {% else %}
+            <div style="width:100%;height:300px;background:#ddd;display:flex;align-items:center;justify-content:center;color:#777;">
+              No video URL
+            </div>
+          {% endif %}
+        </div>
+        {% if block.settings.title != blank or block.settings.hashtag != blank %}
+          <div class="influencer-meta">
+            <div>
+              {% if block.settings.title != blank %}
+                <strong>{{ block.settings.title }}</strong>
+              {% endif %}
+
+              {% if block.settings.hashtag != blank %}
+                {% if block.settings.title != blank %}<br>{% endif %}
+                <span>{{ block.settings.hashtag }}</span>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  let lastUnmuted = null;
+
+  function initInfluencerVideos() {
+    const videos = document.querySelectorAll(
+      '.influencer-carousel .influencer-video video'
+    );
+
+    if (!videos.length) return;
+
+    videos.forEach((video) => {
+      video.muted = true;
+      video.defaultMuted = true;
+      video.playsInline = true;
+      video.preload = 'auto';
+    });
+
+    // Observe EACH video separately
+    const playObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target;
+
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.7) {
+            if (video !== lastUnmuted) {
+              video.muted = true;
+            }
+
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.7
+      }
+    );
+
+    videos.forEach((video) => {
+      playObserver.observe(video);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initInfluencerVideos);
+  } else {
+    initInfluencerVideos();
+  }
+
+
+  function toggleMute(index) {
+    const currentVideo = document.getElementById('video-' + index);
+    const currentIcon = document.getElementById('icon-' + index);
+
+    if (!currentVideo || !currentIcon) return;
+
+    // Mute previously unmuted video
+    if (lastUnmuted && lastUnmuted !== currentVideo) {
+      lastUnmuted.muted = true;
+
+      const lastIndex = lastUnmuted.id.split('-')[1];
+      const lastIcon = document.getElementById('icon-' + lastIndex);
+
+      if (lastIcon) {
+        lastIcon.innerHTML = `
+          <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+          <line x1="23" y1="9" x2="17" y2="15"></line>
+          <line x1="17" y1="9" x2="23" y2="15"></line>
+        `;
+      }
+    }
+
+    currentVideo.muted = !currentVideo.muted;
+
+    currentIcon.innerHTML = currentVideo.muted
+      ? `
+        <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+        <line x1="23" y1="9" x2="17" y2="15"></line>
+        <line x1="17" y1="9" x2="23" y2="15"></line>
+      `
+      : `
+        <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+        <path d="M15 9.354a5 5 0 010 5.292"></path>
+        <path d="M19 6a9 9 0 010 12"></path>
+      `;
+
+    if (currentVideo.muted) {
+      if (lastUnmuted === currentVideo) {
+        lastUnmuted = null;
+      }
+    } else {
+      lastUnmuted = currentVideo;
+      currentVideo.play().catch(() => {});
+    }
+  }
+
+
+  function handleVideoClick(event, link, index) {
+    const video = document.getElementById('video-' + index);
+    const isMobile = window.innerWidth <= 768;
+
+    if (isMobile) {
+      toggleMute(index);
+
+      if (video && video.paused) {
+        video.play().catch(() => {});
+      }
+    } else {
+      if (link) {
+        window.open(link, '_blank');
+      }
+    }
+
+    event.stopPropagation();
+  }
+
+
+  function scrollCarousel(direction) {
+    const carousel = document.getElementById('autoCarousel');
+
+    if (!carousel) return;
+
+    const firstSlide = carousel.querySelector('.influencer-video');
+
+    const scrollAmount = firstSlide
+      ? firstSlide.offsetWidth + 16
+      : 300;
+
+    carousel.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth'
+    });
+  }
+</script>
+{% schema %}
+  {
+    "name": "Influencer Video Carousel",
+    "settings": [
+      {
+        "type": "text",
+        "id": "carousel_heading",
+        "label": "Carousel Heading",
+        "default": "Featured Influencers"
+      }, {
+        "type": "range",
+        "id": "slides_desktop",
+        "label": "Videos per row (desktop)",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "default": 4
+      }
+    ],
+    "blocks": [
+      {
+        "type": "video",
+        "name": "Video Block",
+        "settings": [
+          {
+            "type": "video",
+            "id": "video",
+            "label": "Upload / Select Video"
+          },
+          {
+            "type": "product",
+            "id": "linked_product",
+            "label": "Link Product"
+          },
+          {
+            "type": "collection",
+            "id": "linked_collection",
+            "label": "Link Collection"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Influencer Name"
+          }, {
+            "type": "text",
+            "id": "hashtag",
+            "label": "Hashtag"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Influencer Video Carousel",
+        "blocks": [
+          {
+            "type": "video"
+          }, {
+            "type": "video"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

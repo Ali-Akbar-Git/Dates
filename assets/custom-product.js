@@ -163,7 +163,7 @@ addToCartButton?.addEventListener("click", async () => {
       new CustomEvent("Added-to-cart", {
         detail: {
           item: result,
-          openDrawer: true
+          openDrawer: true,
         },
       }),
     );
@@ -521,119 +521,353 @@ innerPreviousButton?.addEventListener("click", (event) => {
 });
 /* =========================================
    PRODUCT IMAGE SWIPE
-   Enabled at 1024px and below
+   Real finger-follow carousel
+   1024px and below
 ========================================= */
+
 const swipeMediaQuery = window.matchMedia("(max-width: 1024px)");
 
 let swipeStartX = 0;
 let swipeStartY = 0;
-let swipeEndX = 0;
-let swipeEndY = 0;
+let swipeCurrentX = 0;
+let swipeCurrentY = 0;
+
 let swipeInProgress = false;
+let swipeDirectionLocked = false;
+let isHorizontalSwipe = false;
 let blockNextClick = false;
 
-const minimumSwipeDistance = 50;
+let swipePreviewImage = null;
+let swipeTargetIndex = null;
+
+/* -----------------------------------------
+   CREATE IMAGE BESIDE CURRENT IMAGE
+----------------------------------------- */
+
+function createSwipePreview(direction) {
+  if (!mainImage || !thumbnails.length) return;
+
+  const currentIndex = getCurrentImageIndex();
+
+  let targetIndex;
+
+  if (direction === "next") {
+    targetIndex = (currentIndex + 1) % thumbnails.length;
+  } else {
+    targetIndex = (currentIndex - 1 + thumbnails.length) % thumbnails.length;
+  }
+
+  const targetThumbnail = thumbnails[targetIndex];
+  const targetThumbnailImage = targetThumbnail.querySelector("img");
+
+  const imageUrl = targetThumbnail.dataset.imageUrl;
+
+  if (!imageUrl) return;
+
+  swipeTargetIndex = targetIndex;
+
+  swipePreviewImage = document.createElement("img");
+
+  swipePreviewImage.src = imageUrl;
+  swipePreviewImage.alt = targetThumbnailImage?.alt || "";
+
+  swipePreviewImage.className = "product-swipe-preview";
+
+  const imageWidth = mainImage.offsetWidth;
+
+  /*
+   * NEXT image sits on RIGHT
+   * PREVIOUS image sits on LEFT
+   */
+  if (direction === "next") {
+    swipePreviewImage.style.transform = `translateX(${imageWidth}px)`;
+  } else {
+    swipePreviewImage.style.transform = `translateX(-${imageWidth}px)`;
+  }
+
+  mainImage.parentElement.appendChild(swipePreviewImage);
+}
+
+/* -----------------------------------------
+   REMOVE PREVIEW
+----------------------------------------- */
+
+function removeSwipePreview() {
+  if (swipePreviewImage) {
+    swipePreviewImage.remove();
+    swipePreviewImage = null;
+  }
+
+  swipeTargetIndex = null;
+}
+
+/* -----------------------------------------
+   TOUCH START
+----------------------------------------- */
 
 function startImageSwipe(event) {
-  if (!swipeMediaQuery.matches || event.touches.length !== 1) return;
+  if (!swipeMediaQuery.matches || event.touches.length !== 1 || !mainImage) {
+    return;
+  }
 
   const drawerIsOpen = fullImageDrawer?.classList.contains("active");
 
-  /*
-   * When the drawer image is zoomed, touch movement should drag
-   * the zoomed image instead of changing product images.
-   */
-  if (drawerIsOpen && isFullImageZoomed) return;
+  if (drawerIsOpen) return;
+
   const touch = event.touches[0];
 
   swipeStartX = touch.clientX;
   swipeStartY = touch.clientY;
-  swipeEndX = swipeStartX;
-  swipeEndY = swipeStartY;
+
+  swipeCurrentX = swipeStartX;
+  swipeCurrentY = swipeStartY;
+
   swipeInProgress = true;
+  swipeDirectionLocked = false;
+  isHorizontalSwipe = false;
+
+  removeSwipePreview();
+
+  mainImage.style.transition = "none";
 }
 
-function moveImageSwipe(event) {
-  const drawerIsOpen = fullImageDrawer?.classList.contains("active");
+/* -----------------------------------------
+   TOUCH MOVE
+----------------------------------------- */
 
+function moveImageSwipe(event) {
   if (
     !swipeMediaQuery.matches ||
     !swipeInProgress ||
     event.touches.length !== 1 ||
-    (drawerIsOpen && isFullImageZoomed)
+    !mainImage
   ) {
     return;
   }
 
   const touch = event.touches[0];
 
-  swipeEndX = touch.clientX;
-  swipeEndY = touch.clientY;
+  swipeCurrentX = touch.clientX;
+  swipeCurrentY = touch.clientY;
 
-  const horizontalDistance = Math.abs(swipeEndX - swipeStartX);
-  const verticalDistance = Math.abs(swipeEndY - swipeStartY);
+  const distanceX = swipeCurrentX - swipeStartX;
+
+  const distanceY = swipeCurrentY - swipeStartY;
 
   /*
-   * Stop the browser from moving horizontally while swiping images.
-   * Vertical page scrolling will continue working normally.
+   * Decide vertical scroll VS horizontal swipe
    */
-  if (horizontalDistance > verticalDistance) {
-    event.preventDefault();
+  if (!swipeDirectionLocked) {
+    if (Math.abs(distanceX) < 6 && Math.abs(distanceY) < 6) {
+      return;
+    }
+
+    swipeDirectionLocked = true;
+
+    if (Math.abs(distanceX) > Math.abs(distanceY)) {
+      isHorizontalSwipe = true;
+    } else {
+      isHorizontalSwipe = false;
+    }
   }
-}
 
-function endImageSwipe() {
-  const drawerIsOpen = fullImageDrawer?.classList.contains("active");
+  /*
+   * User is scrolling page vertically
+   */
+  if (!isHorizontalSwipe) return;
 
-  if (drawerIsOpen && isFullImageZoomed) {
-    swipeInProgress = false;
-    return;
-  }
-  if (!swipeMediaQuery.matches || !swipeInProgress) return;
+  event.preventDefault();
 
-  swipeInProgress = false;
+  const imageWidth = mainImage.offsetWidth;
 
-  const horizontalDistance = swipeEndX - swipeStartX;
-  const verticalDistance = swipeEndY - swipeStartY;
-
-  const isHorizontalSwipe =
-    Math.abs(horizontalDistance) > Math.abs(verticalDistance);
-
-  const passedMinimumDistance =
-    Math.abs(horizontalDistance) >= minimumSwipeDistance;
-
-  if (!isHorizontalSwipe || !passedMinimumDistance) return;
-
-  blockNextClick = true;
-
-  if (drawerIsOpen) {
-    resetFullImageZoom();
-  }
+  /*
+   * Create neighboring image once
+   * we know swipe direction
+   */
+  const newDirection = distanceX < 0 ? "next" : "previous";
 
   const currentIndex = getCurrentImageIndex();
 
-  if (horizontalDistance < 0) {
-    // Swipe left: show next image
-    selectProductImage(currentIndex + 1);
-  } else {
-    // Swipe right: show previous image
-    selectProductImage(currentIndex - 1);
+  const expectedTargetIndex =
+    newDirection === "next"
+      ? (currentIndex + 1) % thumbnails.length
+      : (currentIndex - 1 + thumbnails.length) % thumbnails.length;
+
+  if (!swipePreviewImage || swipeTargetIndex !== expectedTargetIndex) {
+    removeSwipePreview();
+    createSwipePreview(newDirection);
   }
 
   /*
-   * A touch swipe may create a click immediately afterward.
-   * Temporarily block it so the drawer does not open, close, or zoom.
+   * CURRENT IMAGE follows finger
+   */
+  mainImage.style.transform = `translateX(${distanceX}px)`;
+
+  /*
+   * NEIGHBOR IMAGE follows beside it
+   */
+  if (swipePreviewImage) {
+    if (distanceX < 0) {
+      // Next image coming from right
+      swipePreviewImage.style.transform = `translateX(${imageWidth + distanceX}px)`;
+    } else {
+      // Previous image coming from left
+      swipePreviewImage.style.transform = `translateX(${-imageWidth + distanceX}px)`;
+    }
+  }
+}
+
+/* -----------------------------------------
+   TOUCH END
+----------------------------------------- */
+
+function endImageSwipe() {
+  if (!swipeMediaQuery.matches || !swipeInProgress || !mainImage) {
+    return;
+  }
+
+  swipeInProgress = false;
+
+  const distanceX = swipeCurrentX - swipeStartX;
+
+  const distanceY = swipeCurrentY - swipeStartY;
+
+  /*
+   * Vertical scroll — reset
+   */
+  if (!isHorizontalSwipe || Math.abs(distanceY) > Math.abs(distanceX)) {
+    mainImage.style.transition = "transform 0.25s ease";
+
+    mainImage.style.transform = "translateX(0)";
+
+    removeSwipePreview();
+
+    return;
+  }
+
+  const imageWidth = mainImage.offsetWidth;
+
+  const threshold = imageWidth * 0.18;
+
+  /*
+   * Didn't drag far enough
+   * SNAP BACK
+   */
+  if (Math.abs(distanceX) < threshold) {
+    mainImage.style.transition = "transform 0.25s ease";
+
+    if (swipePreviewImage) {
+      swipePreviewImage.style.transition = "transform 0.25s ease";
+    }
+
+    mainImage.style.transform = "translateX(0)";
+
+    if (swipePreviewImage) {
+      if (distanceX < 0) {
+        swipePreviewImage.style.transform = `translateX(${imageWidth}px)`;
+      } else {
+        swipePreviewImage.style.transform = `translateX(-${imageWidth}px)`;
+      }
+    }
+
+    window.setTimeout(() => {
+      removeSwipePreview();
+    }, 260);
+
+    return;
+  }
+
+  /*
+   * COMPLETE SWIPE
+   */
+
+  blockNextClick = true;
+
+  mainImage.style.transition = "transform 0.25s ease";
+
+  if (swipePreviewImage) {
+    swipePreviewImage.style.transition = "transform 0.25s ease";
+  }
+
+  if (distanceX < 0) {
+    /*
+     * Swipe LEFT
+     *
+     * Current goes left
+     * Next image moves to center
+     */
+    mainImage.style.transform = `translateX(-${imageWidth}px)`;
+
+    if (swipePreviewImage) {
+      swipePreviewImage.style.transform = "translateX(0)";
+    }
+  } else {
+    /*
+     * Swipe RIGHT
+     *
+     * Current goes right
+     * Previous image moves to center
+     */
+    mainImage.style.transform = `translateX(${imageWidth}px)`;
+
+    if (swipePreviewImage) {
+      swipePreviewImage.style.transform = "translateX(0)";
+    }
+  }
+
+  /*
+   * Once animation finishes,
+   * make preview the real main image
+   */
+  window.setTimeout(() => {
+    if (swipeTargetIndex !== null) {
+      selectProductImage(swipeTargetIndex);
+    }
+
+    /*
+     * Reset real main image without animation
+     */
+    mainImage.style.transition = "none";
+    mainImage.style.transform = "translateX(0)";
+
+    removeSwipePreview();
+
+    /*
+     * Restore normal transition
+     */
+    requestAnimationFrame(() => {
+      mainImage.style.transition = "transform 0.25s ease";
+    });
+  }, 250);
+
+  /*
+   * Prevent swipe from opening image drawer
    */
   window.setTimeout(() => {
     blockNextClick = false;
-  }, 300);
+  }, 450);
 }
+
+/* -----------------------------------------
+   CANCEL
+----------------------------------------- */
 
 function cancelImageSwipe() {
   swipeInProgress = false;
+
+  if (mainImage) {
+    mainImage.style.transition = "transform 0.25s ease";
+
+    mainImage.style.transform = "translateX(0)";
+  }
+
+  removeSwipePreview();
 }
 
-/* Main product image swipe */
+/* =========================================
+   EVENTS
+========================================= */
+
 mainImage?.addEventListener("touchstart", startImageSwipe, {
   passive: true,
 });
@@ -646,35 +880,12 @@ mainImage?.addEventListener("touchend", endImageSwipe);
 
 mainImage?.addEventListener("touchcancel", cancelImageSwipe);
 
-/* Fullscreen drawer swipe */
-fullImageDrawer?.addEventListener("touchstart", startImageSwipe, {
-  passive: true,
-});
-
-fullImageDrawer?.addEventListener("touchmove", moveImageSwipe, {
-  passive: false,
-});
-
-fullImageDrawer?.addEventListener("touchend", endImageSwipe);
-
-fullImageDrawer?.addEventListener("touchcancel", cancelImageSwipe);
-
 /*
- * Block clicks created by a completed swipe.
- * Capture mode runs before your existing click handlers.
+ * Stop swipe-generated click
+ * from opening fullscreen drawer
  */
+
 mainImage?.addEventListener(
-  "click",
-  (event) => {
-    if (!blockNextClick) return;
-
-    event.preventDefault();
-    event.stopImmediatePropagation();
-  },
-  true,
-);
-
-fullImageDrawer?.addEventListener(
   "click",
   (event) => {
     if (!blockNextClick) return;

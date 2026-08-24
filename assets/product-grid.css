@@ -10,11 +10,13 @@
   flex-direction: column;
   align-items: center;
 }
-.section-header {
+.section-header,
+.influencer-carousel-heading {
   text-align: center;
   margin-bottom: 30px;
 }
-.section-header h2 {
+.section-header h2,
+.influencer-carousel-heading {
   color: #8b6b2e;
   letter-spacing: 6px;
   text-transform: uppercase;
@@ -25,7 +27,8 @@
   position: relative;
 }
 
-.section-header h2::after {
+.section-header h2::after,
+.influencer-carousel-heading::after {
   content: "";
   position: absolute;
   left: 50%;
@@ -194,17 +197,20 @@
   .custom-search {
     padding: 20px 16px;
   }
-  .section-header {
+  .section-header,
+  .influencer-carousel-heading {
     text-align: center;
     margin-bottom: 15px;
   }
 
-  .section-header h2 {
+  .section-header h2,
+  .influencer-carousel-heading {
     font-size: 28px;
     letter-spacing: 2px;
     line-height: 1.2;
   }
-  .section-header h2::after {
+  .section-header h2::after,
+  .influencer-carousel-heading::after {
     bottom: -10px;
     height: 2px;
     width: 30px;

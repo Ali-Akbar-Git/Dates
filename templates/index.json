@@ -61,13 +61,6 @@
         "autoplay_speed": 5
       }
     },
-    "product_banner": {
-      "type": "custom-banner",
-      "name": "Banner Image",
-      "settings": {
-        "banner_image": "shopify://shop_images/banner.png"
-      }
-    },
     "product_grid_RtaYWH": {
       "type": "product-grid",
       "name": "Product Grid",
@@ -76,12 +69,146 @@
         "collection": "madina-dates"
       }
     },
+    "product_banner": {
+      "type": "custom-banner",
+      "name": "Banner Image",
+      "settings": {
+        "banner_image": "shopify://shop_images/banner.png"
+      }
+    },
     "product_grid_YaTrJU": {
       "type": "product-grid",
       "name": "Product Grid",
       "settings": {
         "heading": "ABE ZAM ZAM",
         "collection": "abe-zam-zam"
+      }
+    },
+    "features_aTGP3n": {
+      "type": "features",
+      "blocks": {
+        "feature_dXqKHh": {
+          "type": "feature",
+          "name": "Feature",
+          "settings": {
+            "image": "shopify://shop_images/Handpicked.webp",
+            "title": "Handpicked<br>Quality"
+          },
+          "blocks": {}
+        },
+        "feature_NFPx3T": {
+          "type": "feature",
+          "name": "Feature",
+          "settings": {
+            "image": "shopify://shop_images/Handpicked.webp",
+            "title": "Grown in<br>Arabian Farms"
+          },
+          "blocks": {}
+        },
+        "feature_9k7EUz": {
+          "type": "feature",
+          "name": "Feature",
+          "settings": {
+            "image": "shopify://shop_images/Luxurious.webp",
+            "title": "Luxurious<br>Packaging"
+          },
+          "blocks": {}
+        },
+        "feature_aPFEhV": {
+          "type": "feature",
+          "name": "Feature",
+          "settings": {
+            "image": "shopify://shop_images/Gift-Worthy.webp",
+            "title": "Gift-Worthy<br>Quality"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "feature_dXqKHh",
+        "feature_NFPx3T",
+        "feature_9k7EUz",
+        "feature_aPFEhV"
+      ],
+      "name": "Features",
+      "settings": {}
+    },
+    "video_slider_iDiCP7": {
+      "type": "video-slider",
+      "blocks": {
+        "video_CTWCBm": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/murabba video 2--1 (1) (1).mp4",
+            "linked_product": "",
+            "linked_collection": "",
+            "title": "",
+            "hashtag": ""
+          }
+        },
+        "video_khUVpf": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/murabba video 2--1 (1) (1).mp4",
+            "linked_product": "",
+            "linked_collection": "",
+            "title": "",
+            "hashtag": ""
+          }
+        },
+        "video_cdfiFQ": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/murabba video 2--1 (1) (1).mp4",
+            "linked_product": "",
+            "linked_collection": "",
+            "title": "",
+            "hashtag": ""
+          }
+        },
+        "video_4riUyw": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/murabba video 2--1 (1) (1).mp4",
+            "linked_product": "",
+            "linked_collection": "",
+            "title": "",
+            "hashtag": ""
+          }
+        },
+        "video_NgpDRD": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/murabba video 2--1 (1) (1).mp4",
+            "linked_product": "",
+            "linked_collection": "",
+            "title": "",
+            "hashtag": ""
+          }
+        },
+        "video_UQPfYt": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/murabba video 2--1 (1) (1).mp4",
+            "linked_product": "",
+            "linked_collection": "",
+            "title": "",
+            "hashtag": ""
+          }
+        }
+      },
+      "block_order": [
+        "video_CTWCBm",
+        "video_khUVpf",
+        "video_cdfiFQ",
+        "video_4riUyw",
+        "video_NgpDRD",
+        "video_UQPfYt"
+      ],
+      "name": "Influencer Video Carousel",
+      "settings": {
+        "carousel_heading": "Featured Influencers",
+        "slides_desktop": 4
       }
     },
     "testimonial_bar_VidKEk": {
@@ -232,55 +359,6 @@
         "speed": 3
       }
     },
-    "features_aTGP3n": {
-      "type": "features",
-      "blocks": {
-        "feature_dXqKHh": {
-          "type": "feature",
-          "name": "Feature",
-          "settings": {
-            "image": "shopify://shop_images/Handpicked.webp",
-            "title": "Handpicked<br>Quality"
-          },
-          "blocks": {}
-        },
-        "feature_NFPx3T": {
-          "type": "feature",
-          "name": "Feature",
-          "settings": {
-            "image": "shopify://shop_images/Handpicked.webp",
-            "title": "Grown in<br>Arabian Farms"
-          },
-          "blocks": {}
-        },
-        "feature_9k7EUz": {
-          "type": "feature",
-          "name": "Feature",
-          "settings": {
-            "image": "shopify://shop_images/Luxurious.webp",
-            "title": "Luxurious<br>Packaging"
-          },
-          "blocks": {}
-        },
-        "feature_aPFEhV": {
-          "type": "feature",
-          "name": "Feature",
-          "settings": {
-            "image": "shopify://shop_images/Gift-Worthy.webp",
-            "title": "Gift-Worthy<br>Quality"
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "feature_dXqKHh",
-        "feature_NFPx3T",
-        "feature_9k7EUz",
-        "feature_aPFEhV"
-      ],
-      "name": "Features",
-      "settings": {}
-    },
     "review_bar_QcK6k9": {
       "type": "testimonial-bar",
       "blocks": {
@@ -369,11 +447,12 @@
   },
   "order": [
     "custom_slideshow_yFGW8x",
-    "product_banner",
     "product_grid_RtaYWH",
+    "product_banner",
     "product_grid_YaTrJU",
-    "testimonial_bar_VidKEk",
     "features_aTGP3n",
+    "video_slider_iDiCP7",
+    "testimonial_bar_VidKEk",
     "review_bar_QcK6k9"
   ]
 }
